@@ -1,0 +1,28 @@
+.nav {
+  padding: 20px;
+  display: flex;
+  nav {
+    flex-grow: 2;
+    display: flex;
+    justify-content: flex-end;
+    ul {
+      list-style-type: none;
+      display: flex;
+      li {
+        padding: 10px;
+        transition: 0.1s;
+        border-bottom: 0px black solid;
+        transform: translateY(0);
+        &:hover {
+          transform: translateY(-2px);
+          border-bottom: 2px black solid;
+        }
+      }
+      a {
+        text-decoration: none;
+        padding: 10px;
+        color: black;
+      }
+    }
+  }
+}

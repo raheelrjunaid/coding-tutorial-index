@@ -1,0 +1,14 @@
+{%extends 'tutorial_index/layout.html'%}
+{%block title%}Home{%endblock%}
+
+{%block body%}
+<div class="nav">
+  <h1>Coding Tutorial Index</h1>
+  <nav>
+    <ul>
+      <li><a href="{%url 'index'%}">Home</a></li>
+      <li><a href="{%url 'login'%}">Login</a></li>
+    </ul>
+  </nav>
+</div>
+{%endblock%}

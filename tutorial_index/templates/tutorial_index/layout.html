@@ -1,0 +1,30 @@
+{%load static%}
+{% load sass_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link href="{% sass_src 'scss/main.scss' %}" rel="stylesheet" type="text/css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{%block title%}{%endblock%}</title>
+</head>
+<body>
+  <div class="nav">
+    <h1>Coding Tutorial Index</h1>
+    <nav>
+      <ul>
+        <li><a href="{%url 'index'%}">Home</a></li>
+        {%if user.is_authenticated %}
+        <li><a href="{%url 'logout'%}">Logout</a></li>
+        <li style="border: none; transform: none;">User: <b>{{request.user}}</b></li>
+        {%else%}
+        <li><a href="{%url 'login'%}">Login</a></li>
+        {%endif%}
+      </ul>
+    </nav>
+  </div>
+  {%block body%}
+  {%endblock%}
+</body>
+</html>

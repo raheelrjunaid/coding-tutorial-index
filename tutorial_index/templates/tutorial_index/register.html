@@ -1,0 +1,12 @@
+{%extends 'tutorial_index/layout.html'%}
+{%block title%}Home{%endblock%}
+
+{%block body%}
+<form action="{%url 'register'%}" method="post">
+  {%csrf_token%}
+  <input type="email" name="email" placeholder="Email">
+  <input type="text" name='username' placeholder='Username'>
+  <input type="password" name='password' placeholder='Password'>
+  <input type="submit" value="Continue">
+</form>
+{%endblock%}
