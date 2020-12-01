@@ -16,6 +16,11 @@ def category(request, category):
 def dashboard(request, dashboard):
   pass
 
+def add_video(request):
+  return render(request, 'tutorial_index/add-video.html', {
+    'categories': Category.objects.all()
+  })
+
 def login_view(request):
   if request.method == 'POST':
     username = request.POST['username']

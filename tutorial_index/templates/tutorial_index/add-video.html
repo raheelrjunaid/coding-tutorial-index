@@ -1,0 +1,38 @@
+{%extends 'tutorial_index/layout.html'%}
+{%block title%}Add Video{%endblock%}
+
+{%block body%}
+<form action="{%url 'add-video'%}" method="post" class="add-video-form">
+  {%csrf_token%}
+  <div>
+    <label for="title">Title:</label>
+    <input type="text" name="title" id="title-field">
+    <button id="preview-button">Generate Preview</button>
+    <button id="manual-button">Manual</button>
+  </div>
+  <br>
+  <label for="category">Choose Categories (Hold Cmd or Ctrl to select multiple): </label>
+  <div>
+    <select name="category" id="category-field" multiple>
+      {%for category in categories%}
+        <option value="{{category}}">{{category.name}}</option>
+      {%endfor%}
+    </select>
+  </div>
+  <br>
+  <div class="create-category">
+    <label for="category">Create Categories (separated by ', '):</label>
+    <input type="text" name="category">
+  </div>
+  <br>
+  <div id="preview"></div>
+  <br>
+  <div>
+    <input type="text" name="description" placeholder="description" hidden>
+    <input type="url" name="url" placeholder="http://example.com" hidden>
+  </div>
+  <div>
+    <input type="submit" value="Add Video">
+  </div>
+</form>
+{%endblock%}
