@@ -17,6 +17,8 @@ def dashboard(request, dashboard):
   pass
 
 def add_video(request):
+  if request.method == 'POST':
+    title = request.POST
   return render(request, 'tutorial_index/add-video.html', {
     'categories': Category.objects.all()
   })

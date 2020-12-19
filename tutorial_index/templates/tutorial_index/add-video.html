@@ -2,15 +2,16 @@
 {%block title%}Add Video{%endblock%}
 
 {%block body%}
-<form action="{%url 'add-video'%}" method="post" class="add-video-form">
+<form action="{%url 'add-video'%}" method="post">
   {%csrf_token%}
   <div>
     <label for="title">Title:</label>
     <input type="text" name="title" id="title-field">
-    <button id="preview-button">Generate Preview</button>
-    <button id="manual-button">Manual</button>
+    <button type="button" id="preview-button">Generate Preview</button>
+    <button type="button" id="manual-button">Manual</button>
   </div>
   <br>
+  <!-- Categories -->
   <label for="category">Choose Categories (Hold Cmd or Ctrl to select multiple): </label>
   <div>
     <select name="category" id="category-field" multiple>
@@ -20,17 +21,21 @@
     </select>
   </div>
   <br>
+  <!-- Create Categories -->
   <div class="create-category">
     <label for="category">Create Categories (separated by ', '):</label>
-    <input type="text" name="category">
+    <div><input type="text" name="created-category"></div>
   </div>
   <br>
+  <!-- Preview -->
   <div id="preview"></div>
-  <br>
-  <div>
-    <input type="text" name="description" placeholder="description" hidden>
-    <input type="url" name="url" placeholder="http://example.com" hidden>
+  <!-- Manual Fields -->
+  <div id="manual-fields" style="display: none;">
+    <input type="text" name="description" placeholder="Description">
+    <input type="url" name="url" placeholder="http://example.com">
   </div>
+  <!-- Submit -->
+  <br>
   <div>
     <input type="submit" value="Add Video">
   </div>
