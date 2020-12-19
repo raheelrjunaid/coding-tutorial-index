@@ -18,7 +18,25 @@ def dashboard(request, dashboard):
 
 def add_video(request):
   if request.method == 'POST':
-    title = request.POST
+    title = request.POST['title']
+    description = request.POST['description']
+    category = request.POST['category']
+    create_category = request.POST['created-category'].split(', ')
+    video_url = request.POST['url']
+
+    tutorial = Tutorial(title=title, description=description, url=video_url)
+    tutorial.save()
+    category = Category.objects.get(name=category)
+    tutorial.category.add(category)
+    tutorial.save()
+
+    if create_category[0] != None:
+      for category in create_category:
+        created_category = Category(name=category)
+        created_category.save()
+        tutorial.category.add(created_category)
+    tutorial.save()
+    
   return render(request, 'tutorial_index/add-video.html', {
     'categories': Category.objects.all()
   })

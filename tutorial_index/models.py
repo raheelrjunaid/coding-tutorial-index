@@ -24,5 +24,8 @@ class Tutorial(models.Model):
   description = models.CharField(max_length=500, null=True)
   url = models.URLField(null=True)
   category = models.ManyToManyField(Category)
-  likes = models.ForeignKey(User, on_delete=models.CASCADE)
+  likes = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
   comments = models.ManyToManyField(Comment)
+  
+  def __str__(self):
+    return f"Tutorial #{self.id}: {self.title}"
