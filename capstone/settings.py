@@ -34,7 +34,8 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'tutorial_index',
-    'sass_processor',
+    # 'sass_processor',
+    'django_sass',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -121,12 +122,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 STATIC_URL = '/static/'
-STATIC_ROOT = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+# STATIC_ROOT = '/static/'
 
-SASS_PROCESSOR_ROOT = os.path.join(BASE_DIR,'static')
+# STATICFILES_FINDERS = [
+#     'django.contrib.staticfiles.finders.FileSystemFinder',
+#     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+#     'sass_processor.finders.CssFinder',
+# ]
 
-STATICFILES_FINDERS = [
-    'django.contrib.staticfiles.finders.FileSystemFinder',
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    'sass_processor.finders.CssFinder',
-]
+# SASS_PROCESSOR_ROOT = os.path.join(BASE_DIR,'static')

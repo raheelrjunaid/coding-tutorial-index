@@ -3,5 +3,22 @@
 
 {%block body%}
 <div class="add-video"><a href="{%url 'add-video'%}">Add a new video</a></div>
-
+<main class="tutorials">
+  {%for tutorial in tutorials%}
+  <div class="tutorial_container" onclick="showPost({{tutorial.id}})">
+    <div class="img-wrapper">
+      <img src="https://img.youtube.com/vi/{{tutorial.video_id}}/hqdefault.jpg" alt="">
+    </div>
+    <h3>{{tutorial.title}}</h3>
+    <p>{{tutorial.description}}</p>
+    <caption>
+      {%for category in tutorial.category.all%}
+        <span class="category">{{category.name}}</span>
+      {%endfor%}
+    </caption>
+  </div>
+  {%endfor%}
+  <div class="active_tutorial"></div>
+  <div class="overlay"></div>
+</main>
 {%endblock%}

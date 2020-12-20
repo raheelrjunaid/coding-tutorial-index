@@ -9,4 +9,5 @@ urlpatterns = [
   path('logout', views.logout_view, name='logout'),
   path('register', views.register, name='register'),
   path('add-video', views.add_video, name='add-video'),
+  path('tutorials/<int:tutorial_id>', views.get_tutorials, name='tutorial_json')
 ]

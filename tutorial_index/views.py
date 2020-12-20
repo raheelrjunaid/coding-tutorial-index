@@ -1,13 +1,26 @@
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect, Http404
+from django.http import HttpResponse, HttpResponseRedirect, Http404, JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from .models import *
 
 # Create your views here.
 def index(request):
-  return render(request, "tutorial_index/index.html")
+  return render(request, "tutorial_index/index.html", {
+    "tutorials": Tutorial.objects.all()
+  })
+
+def get_tutorials(request, tutorial_id):
+  tutorial = Tutorial.objects.get(id=tutorial_id)
+  return JsonResponse({
+    "tutorial-id": tutorial.id,
+    "video-id": tutorial.video_id,
+    "description": tutorial.description,
+    "categories": [name['name'] for name in tutorial.category.all().values()],
+    "likes": [user['username'] for user in tutorial.likes.all().values()],
+    "comments": [comment for comment in tutorial.comments.all().values()]
+  })
 
 def category(request, category):
   pass
@@ -20,26 +33,30 @@ def add_video(request):
   if request.method == 'POST':
     title = request.POST['title']
     description = request.POST['description']
-    category = request.POST['category']
+    category = request.POST.get('category', '')
     create_category = request.POST['created-category'].split(', ')
-    video_url = request.POST['url']
+    video_id = request.POST['id']
 
-    tutorial = Tutorial(title=title, description=description, url=video_url)
+    tutorial = Tutorial(title=title, description=description, video_id=video_id)
     tutorial.save()
-    category = Category.objects.get(name=category)
-    tutorial.category.add(category)
-    tutorial.save()
+    if category == '':
+      pass
+    else:
+      category = Category.objects.get(name=category)
+      tutorial.category.add(category)
+      tutorial.save()
 
-    if create_category[0] != None:
+    if create_category[0] != '':
       for category in create_category:
         created_category = Category(name=category)
         created_category.save()
         tutorial.category.add(created_category)
     tutorial.save()
-    
-  return render(request, 'tutorial_index/add-video.html', {
-    'categories': Category.objects.all()
-  })
+    return HttpResponseRedirect(reverse('index'))
+  else:
+    return render(request, 'tutorial_index/add-video.html', {
+      'categories': Category.objects.all()
+    })
 
 def login_view(request):
   if request.method == 'POST':

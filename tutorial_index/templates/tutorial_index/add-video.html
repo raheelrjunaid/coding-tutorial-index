@@ -1,5 +1,8 @@
 {%extends 'tutorial_index/layout.html'%}
 {%block title%}Add Video{%endblock%}
+{% load static %}
+
+{%block js%}<script src="{%static 'js/addvideo.js'%}"></script>{%endblock%}
 
 {%block body%}
 <form action="{%url 'add-video'%}" method="post">
@@ -32,7 +35,7 @@
   <!-- Manual Fields -->
   <div id="manual-fields" style="visibility: visible;">
     <input type="text" name="description" placeholder="Description">
-    <input type="url" name="url" placeholder="http://example.com">
+    <input type="text" name="id" placeholder="Video ID">
   </div>
   <!-- Submit -->
   <br>

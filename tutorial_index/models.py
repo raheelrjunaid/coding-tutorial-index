@@ -20,12 +20,12 @@ class Category(models.Model):
     return self.name
 
 class Tutorial(models.Model):
-  title = models.CharField(max_length=500, null=True)
-  description = models.CharField(max_length=500, null=True)
-  url = models.URLField(null=True)
-  category = models.ManyToManyField(Category)
-  likes = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-  comments = models.ManyToManyField(Comment)
+  title = models.CharField(max_length=500)
+  description = models.CharField(max_length=500)
+  video_id = models.CharField(max_length=200)
+  category = models.ManyToManyField(Category, blank=True)
+  likes = models.ManyToManyField(User, blank=True)
+  comments = models.ManyToManyField(Comment, blank=True)
   
   def __str__(self):
     return f"Tutorial #{self.id}: {self.title}"

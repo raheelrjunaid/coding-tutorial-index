@@ -1,9 +1,27 @@
-@import 'resets';
-@import 'base';
-@import 'nav';
+@import "resets";
+@import "base";
+@import "nav";
 
 .register-prompt {
   a {
     text-decoration: underline;
   }
+}
+.tutorials {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  justify-items: center;
+}
+.tutorial_container {
+  width: 400px;
+  cursor: pointer;
+  .img-wrapper {
+    height: 225px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+  }
+}
+.category {
+  border: 2px black solid;
 }
