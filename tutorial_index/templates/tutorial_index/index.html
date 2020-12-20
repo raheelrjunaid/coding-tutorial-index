@@ -11,14 +11,14 @@
     </div>
     <h3>{{tutorial.title}}</h3>
     <p>{{tutorial.description}}</p>
-    <caption>
+    <div>
       {%for category in tutorial.category.all%}
-        <span class="category">{{category.name}}</span>
+        <a href="{%url 'category' category.name%}" class="category">{{category.name}}</a>
       {%endfor%}
-    </caption>
+    </div>
   </div>
   {%endfor%}
   <div class="active_tutorial"></div>
-  <div class="overlay"></div>
 </main>
+<div class="overlay" style="visibility: hidden;"></div>
 {%endblock%}

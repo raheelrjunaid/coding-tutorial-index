@@ -11,6 +11,7 @@ def index(request):
     "tutorials": Tutorial.objects.all()
   })
 
+# API
 def get_tutorials(request, tutorial_id):
   tutorial = Tutorial.objects.get(id=tutorial_id)
   return JsonResponse({
