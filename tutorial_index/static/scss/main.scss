@@ -1,5 +1,4 @@
 @import "resets";
-@import "base";
 @import "nav";
 
 .register-prompt {
@@ -15,6 +14,7 @@
   right: 0;
   bottom: 0;
   left: 0;
+  cursor: pointer;
 }
 .tutorials {
   display: grid;
@@ -33,4 +33,9 @@
 }
 .category {
   border: 2px black solid;
+}
+.active_tutorial {
+  position: absolute;
+  z-index: 3; 
+  background-color: white;
 }

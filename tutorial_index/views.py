@@ -16,7 +16,8 @@ def get_tutorials(request, tutorial_id):
   tutorial = Tutorial.objects.get(id=tutorial_id)
   return JsonResponse({
     "tutorial-id": tutorial.id,
-    "video-id": tutorial.video_id,
+    "title": tutorial.title,
+    "video_id": tutorial.video_id,
     "description": tutorial.description,
     "categories": [name['name'] for name in tutorial.category.all().values()],
     "likes": [user['username'] for user in tutorial.likes.all().values()],

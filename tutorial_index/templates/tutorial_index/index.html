@@ -5,7 +5,7 @@
 <div class="add-video"><a href="{%url 'add-video'%}">Add a new video</a></div>
 <main class="tutorials">
   {%for tutorial in tutorials%}
-  <div class="tutorial_container" onclick="showPost({{tutorial.id}})">
+  <div class="tutorial_container" onclick="showTutorial({{tutorial.id}})">
     <div class="img-wrapper">
       <img src="https://img.youtube.com/vi/{{tutorial.video_id}}/hqdefault.jpg" alt="">
     </div>
@@ -18,7 +18,15 @@
     </div>
   </div>
   {%endfor%}
-  <div class="active_tutorial"></div>
 </main>
-<div class="overlay" style="visibility: hidden;"></div>
+<div style="display: flex; justify-content: center; align-items: center;">
+  <div class="active_tutorial" style="visibility: hidden;">
+    <button onclick="showTutorial()"></button>
+    <iframe src=""></iframe>
+    <h1></h1>
+    <p></p>
+    <div id="categories"></div>
+  </div>
+  <div class="overlay" style="visibility: hidden;" onclick="showTutorial()"></div>
+</div>
 {%endblock%}
