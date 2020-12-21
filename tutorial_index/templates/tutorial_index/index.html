@@ -1,32 +1,35 @@
-{%extends 'tutorial_index/layout.html'%}
-{%block title%}Home{%endblock%}
-
-{%block body%}
+{%extends 'tutorial_index/layout.html'%} {%block title%}Home{%endblock%} {%block body%}
+{%block category%}{%endblock%}
 <div class="add-video"><a href="{%url 'add-video'%}">Add a new video</a></div>
 <main class="tutorials">
   {%for tutorial in tutorials%}
-  <div class="tutorial_container" onclick="showTutorial({{tutorial.id}})">
-    <div class="img-wrapper">
-      <img src="https://img.youtube.com/vi/{{tutorial.video_id}}/hqdefault.jpg" alt="">
+  <div class="tutorial_container">
+    <div onclick="showTutorial({{tutorial.id}}, '{{request.user.username}}')">
+      <div class="img-wrapper">
+        <img src="https://img.youtube.com/vi/{{tutorial.video_id}}/hqdefault.jpg" alt="" />
+      </div>
+      <h3>{{tutorial.title}}</h3>
+      <p>{{tutorial.description}}</p>
     </div>
-    <h3>{{tutorial.title}}</h3>
-    <p>{{tutorial.description}}</p>
+    <!-- Categories -->
     <div>
       {%for category in tutorial.category.all%}
-        <a href="{%url 'category' category.name%}" class="category">{{category.name}}</a>
+      <a href="{%url 'category' category.name%}" class="category">{{category.name}}</a>
       {%endfor%}
     </div>
   </div>
   {%endfor%}
 </main>
-<div style="display: flex; justify-content: center; align-items: center;">
-  <div class="active_tutorial" style="visibility: hidden;">
-    <button onclick="showTutorial()"></button>
+<div style="display: flex; justify-content: center; align-items: center">
+  <div class="active_tutorial" style="visibility: hidden">
+    <button onclick="closeTutorial()">X</button>
     <iframe src=""></iframe>
     <h1></h1>
-    <p></p>
+    <p id="description"></p>
     <div id="categories"></div>
+    <button class="like_button">Like</button>
+    <button class="dislike_button">Dislike</button>
   </div>
-  <div class="overlay" style="visibility: hidden;" onclick="showTutorial()"></div>
+  <div class="overlay" style="visibility: hidden" onclick="closeTutorial()"></div>
 </div>
 {%endblock%}

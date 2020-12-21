@@ -10,5 +10,6 @@ urlpatterns = [
   path('register', views.register, name='register'),
   path('add-video', views.add_video, name='add-video'),
   path('category/<str:category_name>', views.category, name='category'),
-  path('tutorials/<int:tutorial_id>', views.get_tutorials, name='tutorial_json')
+  path('tutorials/<int:tutorial_id>', views.get_tutorials, name='tutorial_json'),
+  path('tutorials/<int:tutorial_id>/<str:action>', views.update_tutorial, name='tutorial_json_put')
 ]
