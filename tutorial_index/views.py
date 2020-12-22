@@ -38,7 +38,7 @@ def update_tutorial(request, tutorial_id, action):
   # Only allow put requests
   if request.method == "PUT":
     # Get the user that prompted request
-    user = User.objects.get(username=json.loads(request.body)['username'])
+    user = User.objects.get(username=json.loads(request.body)["username"])
     # Liking a Post
     if action == "like":
       if user in tutorial.likes.all():
