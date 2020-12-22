@@ -1,15 +1,17 @@
-const overlay = document.querySelector(".overlay");
-const active_tutorial_container = document.querySelector(".active_tutorial");
-const tutorial_title = document.querySelector(".active_tutorial h1");
-const tutorial_description = document.querySelector(".active_tutorial #description");
-const tutorial_categories = document.querySelector(".active_tutorial #categories");
-const tutorial_video = document.querySelector(".active_tutorial iframe");
+const overlay, active_tutorial_container, tutorial_title, tutorial_description, tutorial_categories, tutorial_video, tutorial_like_counter, tutorial_like_button, tutorial_dislike_counter, tutorial_dislike_button;
+
+overlay = document.querySelector(".overlay");
+active_tutorial_container = document.querySelector(".active_tutorial");
+tutorial_title = document.querySelector(".active_tutorial h1");
+tutorial_description = document.querySelector(".active_tutorial #description");
+tutorial_categories = document.querySelector(".active_tutorial #categories");
+tutorial_video = document.querySelector(".active_tutorial iframe");
 // Likes
-const tutorial_like_counter = document.querySelector('.active_tutorial #like_counter');
-const tutorial_like_button = document.querySelector(".active_tutorial .like_button");
+tutorial_like_counter = document.querySelector('.active_tutorial #like_counter');
+tutorial_like_button = document.querySelector(".active_tutorial .like_button");
 // Dislikes
-const tutorial_dislike_counter = document.querySelector('.active_tutorial #dislike_counter');
-const tutorial_dislike_button = document.querySelector(".active_tutorial .dislike_button");
+tutorial_dislike_counter = document.querySelector('.active_tutorial #dislike_counter');
+tutorial_dislike_button = document.querySelector(".active_tutorial .dislike_button");
 
 function showTutorial(tutorial_id, username) {
   fetch(`/tutorials/${tutorial_id}`)
