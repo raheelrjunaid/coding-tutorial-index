@@ -33,12 +33,12 @@ def get_tutorials(request, tutorial_id):
   })
 
 @csrf_exempt
-# API[PUT] -> (like, dislike, update_body, update_title, update_categories)
+# API[PUT] -> (like, dislike, comments)
 def update_tutorial(request, tutorial_id, action):
-  tutorial = Tutorial.objects.get(id=tutorial_id)
   # Only allow put requests
   if request.method == "PUT":
     # Get the user that prompted request
+    tutorial = Tutorial.objects.get(id=tutorial_id)
     user = User.objects.get(username=json.loads(request.body)["username"])
     # Liking a Post
     if action == "like":
@@ -60,6 +60,15 @@ def update_tutorial(request, tutorial_id, action):
       if user in tutorial.likes.all():
         tutorial.likes.remove(user)
       tutorial.save()
+    elif action == "comment":
+      data = json.loads(request.body)
+      if data['content'] != '':
+        new_comment = Comment(author=user, content=data['content'])
+        new_comment.save()
+        tutorial.comments.add(new_comment)
+        tutorial.save()
+      else:
+        pass
     return HttpResponse('Success', status=201)
   else:
     return HttpResponse("Error: must be a PUT request", status=400)
