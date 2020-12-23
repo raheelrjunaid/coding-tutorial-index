@@ -34,10 +34,35 @@ preview_button.addEventListener('click', () => {
     preview.innerHTML = '<b>Title Field Empty</b>'
   }
 })
-
 manual_fields_toggle.addEventListener('click', () => {
   manual_fields_container.style.visibility = 'visible'
   preview.innerHTML = ''
   manual_fields_description.value = ''
   manual_fields_id.value = ''
 })
+function checkValidity() {
+  const error = document.querySelector('.error_message');
+  let stop_form_submission;
+  
+  if(manual_fields_id.value === '') {
+    error.textContent = 'Video ID is empty';
+  }
+  else {
+    fetch(`tutorials/`)
+    .then(response => response.json())
+    .then(data => {
+      for(i = 0; i <= (data['tutorials'].length - 1); i++) {
+        if(manual_fields_id.value === data['tutorials'][i].video_id){
+          error.textContent = 'Video already exists';
+          stop_form_submission = true;
+          break;
+        } else {
+          stop_form_submission = false;
+        }
+      }
+      if(stop_form_submission == false) {
+        return document.querySelector('form').submit();
+      }
+    })
+  }
+}
