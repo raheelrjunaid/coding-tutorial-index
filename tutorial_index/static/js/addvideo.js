@@ -1,11 +1,11 @@
-const preview = document.querySelector('#preview')
-const title_field = document.querySelector('#title-field')
-const preview_button = document.querySelector('#preview-button')
-
-const manual_fields_toggle = document.querySelector('#manual-button')
-const manual_fields_container = document.querySelector('#manual-fields')
-const manual_fields_description = document.querySelector('#manual-fields input[name="description"]')
-const manual_fields_id = document.querySelector('#manual-fields input[name="id"]')
+let preview = document.querySelector('#preview'),
+title_field = document.querySelector('#title-field'),
+preview_button = document.querySelector('#preview-button'),
+// Manual Fields
+manual_fields_toggle = document.querySelector('#manual-button'),
+manual_fields_container = document.querySelector('#manual-fields'),
+manual_fields_description = document.querySelector('#manual-fields input[name="description"]'),
+manual_fields_id = document.querySelector('#manual-fields input[name="id"]');
 
 preview_button.addEventListener('click', () => {
   if (title_field.value) {

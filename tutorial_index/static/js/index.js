@@ -1,19 +1,17 @@
-let overlay, active_tutorial_container, tutorial_title, tutorial_description, tutorial_categories, tutorial_video, tutorial_like_counter, tutorial_like_button, tutorial_dislike_counter, tutorial_dislike_button;
-
-overlay = document.querySelector(".overlay");
-active_tutorial_container = document.querySelector(".active_tutorial");
-tutorial_title = document.querySelector(".active_tutorial h1");
-tutorial_description = document.querySelector(".active_tutorial #description");
-tutorial_categories = document.querySelector(".active_tutorial #categories");
-tutorial_video = document.querySelector(".active_tutorial iframe");
+let overlay = document.querySelector(".overlay"),
+active_tutorial_container = document.querySelector(".active_tutorial"),
+tutorial_title = document.querySelector(".active_tutorial h1"),
+tutorial_description = document.querySelector(".active_tutorial #description"),
+tutorial_categories = document.querySelector(".active_tutorial #categories"),
+tutorial_video = document.querySelector(".active_tutorial iframe"),
 // Comments
-tutorial_comments = document.querySelector(".active_tutorial #comments")
-tutorial_comments_form = document.querySelector(".active_tutorial #commenting_form")
+tutorial_comments = document.querySelector(".active_tutorial #comments"),
+tutorial_comments_form = document.querySelector(".active_tutorial #commenting_form"),
 // Likes
-tutorial_like_counter = document.querySelector('.active_tutorial #like_counter');
-tutorial_like_button = document.querySelector(".active_tutorial .like_button");
+tutorial_like_counter = document.querySelector('.active_tutorial #like_counter'),
+tutorial_like_button = document.querySelector(".active_tutorial .like_button"),
 // Dislikes
-tutorial_dislike_counter = document.querySelector('.active_tutorial #dislike_counter');
+tutorial_dislike_counter = document.querySelector('.active_tutorial #dislike_counter'),
 tutorial_dislike_button = document.querySelector(".active_tutorial .dislike_button");
 
 function showTutorial(tutorial_id, username) {
