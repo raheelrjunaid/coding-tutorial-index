@@ -16,21 +16,31 @@ def index(request):
           "tutorials": Tutorial.objects.all()}
   )
 
-
 # API[GET]
-def get_tutorials(request, tutorial_id):
-  tutorial = Tutorial.objects.get(id=tutorial_id)
-  return JsonResponse({
-      "tutorial_id": tutorial.id,
-      "title": tutorial.title,
-      "video_id": tutorial.video_id,
-      "description": tutorial.description,
-      "categories": [name["name"] for name in tutorial.category.all().values()],
-      "likes": [user["username"] for user in tutorial.likes.all().values()],
-      "dislikes": [user["username"] for user in tutorial.dislikes.all().values()],
-      # "comments": [comment for comment in tutorial.comments.all().values()]
-      "comments": [comment['fields'] for comment in json.loads(serializers.serialize("json", tutorial.comments.all(), use_natural_foreign_keys=True, fields=('author', 'content')))]
-  })
+
+
+def get_tutorials(request, tutorial_id=''):
+  if tutorial_id != '':
+    tutorial = Tutorial.objects.get(id=tutorial_id)
+    return JsonResponse({
+        "tutorial_id": tutorial.id,
+        "title": tutorial.title,
+        "video_id": tutorial.video_id,
+        "description": tutorial.description,
+        "categories": [name["name"] for name in tutorial.category.all().values()],
+        "likes": [user["username"] for user in tutorial.likes.all().values()],
+        "dislikes": [user["username"] for user in tutorial.dislikes.all().values()],
+        # "comments": [comment for comment in tutorial.comments.all().values()]
+        "comments": [comment['fields'] for comment in json.loads(serializers.serialize("json", tutorial.comments.all(), use_natural_foreign_keys=True, fields=('author', 'content')))]
+    }, json_dumps_params={'indent': 4})
+  else:
+    results = []
+    for tutorial in Tutorial.objects.all().values():
+      results.append(tutorial)
+    return JsonResponse({
+        "tutorials": results
+    }, json_dumps_params={'indent': 4})
+
 
 @csrf_exempt
 # API[PUT] -> (like, dislike, comments)
@@ -99,26 +109,29 @@ def add_video(request):
     video_id = request.POST["id"]
 
     # Creating the tutorial Object
-    tutorial = Tutorial(
-        title=title, description=description, video_id=video_id)
-    tutorial.save()
-
-    # Checking to see if a category has been specified
-    if category != "":
-      category = Category.objects.get(name=category)
-      tutorial.category.add(category)
+    if video_id != '':
+      tutorial = Tutorial(
+          title=title, description=description, video_id=video_id)
       tutorial.save()
 
-    # Checking for created categories
-    if create_category[0] != "":
-      for category in create_category:
-        # Adding that category to the model
-        created_category = Category(name=category)
-        created_category.save()
-        # Associating that category with the tutorial
-        tutorial.category.add(created_category)
-    tutorial.save()
-    return HttpResponseRedirect(reverse("index"))
+      # Checking to see if a category has been specified
+      if category != "":
+        category = Category.objects.get(name=category)
+        tutorial.category.add(category)
+        tutorial.save()
+
+      # Checking for created categories
+      if create_category[0] != "":
+        for category in create_category:
+          # Adding that category to the model
+          created_category = Category(name=category)
+          created_category.save()
+          # Associating that category with the tutorial
+          tutorial.category.add(created_category)
+      tutorial.save()
+      return HttpResponseRedirect(reverse("index"))
+    else:
+      return HttpResponseRedirect(reverse('add-video'))
   # Get the add video page
   else:
     return render(
