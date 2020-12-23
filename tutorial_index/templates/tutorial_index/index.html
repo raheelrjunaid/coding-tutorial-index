@@ -16,6 +16,7 @@
       {%for category in tutorial.category.all%}
       <a href="{%url 'category' category.name%}" class="category">{{category.name}}</a>
       {%endfor%}
+      <span style="float: right;">{{tutorial.comments.all | length}} Comments</span>
     </div>
   </div>
   {%endfor%}
