@@ -5,6 +5,7 @@ from django.http import HttpResponse, HttpResponseRedirect, Http404, JsonRespons
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.urls import reverse
+from django.core import serializers
 from .models import *
 
 
@@ -27,9 +28,9 @@ def get_tutorials(request, tutorial_id):
       "categories": [name["name"] for name in tutorial.category.all().values()],
       "likes": [user["username"] for user in tutorial.likes.all().values()],
       "dislikes": [user["username"] for user in tutorial.dislikes.all().values()],
-      "comments": [comment for comment in tutorial.comments.all().values()],
+      # "comments": [comment for comment in tutorial.comments.all().values()]
+      "comments": [comment['fields'] for comment in json.loads(serializers.serialize("json", tutorial.comments.all(), use_natural_foreign_keys=True, fields=('author', 'content')))]
   })
-
 
 @csrf_exempt
 # API[PUT] -> (like, dislike, update_body, update_title, update_categories)
@@ -66,9 +67,10 @@ def update_tutorial(request, tutorial_id, action):
 
 def category(request, category):
   return render(request, "tutorial_index/category.html", {
-    "tutorials": Tutorial.objects.filter(category=Category.objects.get(name=category)),
-    "category": category
+      "tutorials": Tutorial.objects.filter(category=Category.objects.get(name=category)),
+      "category": category
   })
+
 
 @login_required(login_url="/login")
 def dashboard(request, dashboard):
