@@ -20,8 +20,22 @@ def index(request):
 
 
 def get_tutorials(request, tutorial_id=''):
+  # Get replies from comment
+  def get_replies(replies):
+    replies_list = []
+    for reply in replies:
+      replies_list.append({
+        "id": reply.id, "author": User.objects.get(id=reply.author_id).username, "content": reply.content
+      })
+    return replies_list
   if tutorial_id != '':
     tutorial = Tutorial.objects.get(id=tutorial_id)
+    comments = []
+    for comment in tutorial.comments.all():
+      if (comment.reply == False):
+        comments.append({
+          "id": comment.id, "author": User.objects.get(id=comment.author_id).username, "content": comment.content, "replies": get_replies(comment.replies.all())
+        })
     return JsonResponse({
         "tutorial_id": tutorial.id,
         "title": tutorial.title,
@@ -30,9 +44,9 @@ def get_tutorials(request, tutorial_id=''):
         "categories": [name["name"] for name in tutorial.category.all().values()],
         "likes": [user["username"] for user in tutorial.likes.all().values()],
         "dislikes": [user["username"] for user in tutorial.dislikes.all().values()],
-        # "comments": [comment for comment in tutorial.comments.all().values()]
-        "comments": [comment['fields'] for comment in json.loads(serializers.serialize("json", tutorial.comments.all(), use_natural_foreign_keys=True, fields=('author', 'content')))]
+        "comments": comments
     }, json_dumps_params={'indent': 4})
+  # Shpw all tutorials
   else:
     results = []
     for tutorial in Tutorial.objects.all().values():
@@ -77,8 +91,14 @@ def update_tutorial(request, tutorial_id, action):
         new_comment.save()
         tutorial.comments.add(new_comment)
         tutorial.save()
-      else:
-        pass
+    elif action == 'reply':
+      data = json.loads(request.body)
+      if data['content'] != '':
+        new_reply = Comment(author=user, content=data['content'])
+        new_reply.save()
+        comment_replied_to = Comment.objects.get(id=data['comment_reply_id'])
+        comment_replied_to.replies.add(new_reply)
+        comment_replied_to.save()
     return HttpResponse('Success', status=201)
   else:
     return HttpResponse("Error: must be a PUT request", status=400)
