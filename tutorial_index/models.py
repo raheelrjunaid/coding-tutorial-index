@@ -14,8 +14,8 @@ class Comment(models.Model):
       User, on_delete=models.CASCADE, related_name="commented", null=True)
   content = models.CharField(max_length=200)
   replies = models.ManyToManyField(
-      'self', symmetrical=False, related_name='replied_to')
-
+      'self', symmetrical=False, related_name='replied_to', blank=True)
+  reply = models.BooleanField(default=False)
   def natural_key(self):
     return {self.author.username: self.content}
 

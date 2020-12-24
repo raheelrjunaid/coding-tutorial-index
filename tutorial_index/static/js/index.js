@@ -5,7 +5,7 @@ tutorial_description = document.querySelector(".active_tutorial #description"),
 tutorial_categories = document.querySelector(".active_tutorial #categories"),
 tutorial_video = document.querySelector(".active_tutorial iframe"),
 // Comments
-tutorial_comments = document.querySelector(".active_tutorial #comments"),
+tutorial_comments = document.querySelector(".active_tutorial .comments"),
 tutorial_comments_form = document.querySelector(".active_tutorial #commenting_form"),
 // Likes
 tutorial_like_counter = document.querySelector('.active_tutorial #like_counter'),
@@ -54,9 +54,12 @@ function showTutorial(tutorial_id, username) {
         tutorial_categories.appendChild(link);
       });
       // Comments
+      tutorial_comments.dataset.tutorialId = tutorial_id;
       data.comments.forEach((comment) => {
         const newComment = document.createElement("div")
-        newComment.innerHTML = `<h4>By: ${comment['author']}</h4>${comment['content']} <button>Reply</button>`
+        newComment.innerHTML = `
+        <h4>By: ${comment['author']}</h4>${comment['content']} <a href="" onclick="event.returnValue=false; reply(${comment['id']}, false, '${username}')">Reply</a>`
+        newComment.id = comment['id']
         tutorial_comments.appendChild(newComment)
         for(i = 0; i < comment['replies'].length; i++) {
           const newReply = document.createElement("div")
@@ -127,12 +130,49 @@ function addComment(tutorial_id, username) {
     body: JSON.stringify({
       username: username,
       content: input_field.value
-    }),
+    })
   })
   if(input_field.value != "") {
-    const newComment = document.createElement("div")
-    newComment.innerHTML = `<h4>By: ${username}</h4>${input_field.value}`
-    input_field.value = ''
-    tutorial_comments.appendChild(newComment)
+    const newComment = document.createElement("div");
+    newComment.innerHTML = `<h4>By: ${username}</h4>${input_field.value}`;
+    input_field.value = '';
+    tutorial_comments.appendChild(newComment);
+  }
+}
+
+function reply(comment_id, reply_status=false, username=null) {
+  const comment_replied_to = document.getElementById(comment_id);
+  // If the form already exists
+  // Create Reply
+  if(document.querySelector('#reply_form') && reply_status == true) {
+    const reply_form_input = document.querySelector('#reply_form input')
+    if(reply_form_input.value != '') {
+      fetch(`/tutorials/${comment_replied_to.parentNode.dataset.tutorialId}/reply`, {
+        method: "PUT",
+        body: JSON.stringify({
+          comment_reply_id: comment_id,
+          username: username,
+          content: reply_form_input.value
+        })
+      })
+      const reply = document.createElement("div");
+      reply.style.marginLeft = '20px';
+      reply.innerHTML = `<h4>By: ${username}</h4>${reply_form_input.value}`;
+      comment_replied_to.parentNode.insertBefore(reply, comment_replied_to.nextSibling);
+      document.querySelector('#reply_form').remove();
+    }
+  }
+  // Remove and replace the form
+  else if(document.querySelector('#reply_form')) {
+    document.querySelector('#reply_form').remove();
+    reply(comment_id);
+  }
+  // Else create a new form
+  else {
+    const reply_form = document.createElement("form");
+    reply_form.id = 'reply_form'
+    reply_form.innerHTML = `Write a reply <input type="text"><button type="button" onclick="reply(${comment_id}, true, '${username}')">Reply<button>`;
+    reply_form.style.marginLeft = '20px';
+    comment_replied_to.parentNode.insertBefore(reply_form, comment_replied_to.nextSibling);
   }
 }
