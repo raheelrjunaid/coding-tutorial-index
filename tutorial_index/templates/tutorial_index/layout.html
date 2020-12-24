@@ -2,30 +2,30 @@
 
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <link href="{% static 'css/main.css' %}" rel="stylesheet" type="text/css" />
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{%block title%}{%endblock%}</title>
-</head>
-<body>
-  <div class="nav">
-    <h1 class="brand_logo"><a href="{%url 'index'%}">Coding Tutorial Index</a></h1>
-    <nav>
-      <ul>
-        <li><a href="{%url 'index'%}">Home</a></li>
-        {%if user.is_authenticated %}
-        <li><a href="{%url 'logout'%}">Logout</a></li>
-        <li style="border: none; transform: none;">User: <b>{{request.user}}</b></li>
-        {%else%}
-        <li><a href="{%url 'login'%}">Login</a></li>
-        {%endif%}
-      </ul>
-    </nav>
-  </div>
-  {%block body%}
-  {%endblock%}
-  {%block js%}{%endblock%}
-  <script src="{% static 'js/index.js' %}"></script>
-</body>
+  <head>
+    <link href="{% static 'css/main.css' %}" rel="stylesheet" type="text/css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{%block title%}{%endblock%}</title>
+  </head>
+  <body>
+    <div class="nav">
+      <h1 class="brand_logo"><a href="{%url 'index'%}">Coding Tutorial Index</a></h1>
+      <nav>
+        <ul>
+          <li><a href="{%url 'index'%}">Home</a></li>
+          {%if user.is_authenticated %}
+          <li style="border: none; transform: none" onclick="document.querySelector('.logout-popup').classList.toggle('hidden')">
+            User: <b>{{request.user}}</b>
+          </li>
+          <div class="logout-popup hidden"><a href="{%url 'logout'%}">Logout</a></div>
+          {%else%}
+          <li><a href="{%url 'login'%}">Login</a></li>
+          {%endif%}
+        </ul>
+      </nav>
+    </div>
+    {%block body%} {%endblock%} {%block js%}{%endblock%}
+    <script src="{% static 'js/index.js' %}"></script>
+  </body>
 </html>
