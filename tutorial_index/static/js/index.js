@@ -56,7 +56,11 @@ function showTutorial(tutorial_id, username) {
       // Comments
       data.comments.forEach((comment) => {
         const newComment = document.createElement("div")
-        newComment.innerHTML = `<h4>By: ${comment['author']}</h4>${comment['content']}`
+        newComment.innerHTML = `<h4>By: ${comment['fields']['author']}</h4>${comment['fields']['content']} <button>Reply</button>`
+        if(comment['fields']['replies'] != '') {
+          newComment.className = 'origin-comment'
+        }
+        console.log(comment['fields']['replies'])
         tutorial_comments.appendChild(newComment)
       })
     });

@@ -20,8 +20,21 @@ def index(request):
 
 
 def get_tutorials(request, tutorial_id=''):
+  def get_replies(replies):
+    replies_list = []
+    for reply in replies:
+      replies_list.append({
+        "id": reply.id, "author": User.objects.get(id=reply.author_id).username, "content": reply.content, "replies": get_replies(reply.replies.all())
+      })
+    return replies_list
   if tutorial_id != '':
     tutorial = Tutorial.objects.get(id=tutorial_id)
+    comments = []
+    for comment in tutorial.comments.all():
+      comments.append({
+        "id": comment.id, "author": User.objects.get(id=comment.author_id).username, "content": comment.content, "replies": get_replies(comment.replies.all())
+      })
+      # print(comment.replies.all().values())
     return JsonResponse({
         "tutorial_id": tutorial.id,
         "title": tutorial.title,
@@ -30,8 +43,7 @@ def get_tutorials(request, tutorial_id=''):
         "categories": [name["name"] for name in tutorial.category.all().values()],
         "likes": [user["username"] for user in tutorial.likes.all().values()],
         "dislikes": [user["username"] for user in tutorial.dislikes.all().values()],
-        # "comments": [comment for comment in tutorial.comments.all().values()]
-        "comments": [comment['fields'] for comment in json.loads(serializers.serialize("json", tutorial.comments.all(), use_natural_foreign_keys=True, fields=('author', 'content')))]
+        "comments": comments
     }, json_dumps_params={'indent': 4})
   else:
     results = []
