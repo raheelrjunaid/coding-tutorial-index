@@ -13,7 +13,9 @@ from .models import *
 def index(request):
   return render(
       request, "tutorial_index/index.html", {
-          "tutorials": Tutorial.objects.all()}
+          "tutorials": Tutorial.objects.all(),
+          "categories": Category.objects.all()
+          }
   )
 
 # API[GET]

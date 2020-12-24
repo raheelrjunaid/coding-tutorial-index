@@ -1,6 +1,13 @@
 {%extends 'tutorial_index/layout.html'%} {%block title%}Home{%endblock%} {%block body%}
 {%block category%}{%endblock%}
 <div class="add-video"><a href="{%url 'add-video'%}">Add a new video</a></div>
+{%block categories_list%}
+<div style="overflow-x: scroll;">
+  {%for category in categories%}
+  <a href="{%url 'category' category.name%}">{{category.name}}</a>
+  {%endfor%}
+</div>
+{%endblock%}
 <main class="tutorials">
   {%for tutorial in tutorials%}
   <div class="tutorial_container">
