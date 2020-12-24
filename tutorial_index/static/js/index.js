@@ -56,12 +56,14 @@ function showTutorial(tutorial_id, username) {
       // Comments
       data.comments.forEach((comment) => {
         const newComment = document.createElement("div")
-        newComment.innerHTML = `<h4>By: ${comment['fields']['author']}</h4>${comment['fields']['content']} <button>Reply</button>`
-        if(comment['fields']['replies'] != '') {
-          newComment.className = 'origin-comment'
-        }
-        console.log(comment['fields']['replies'])
+        newComment.innerHTML = `<h4>By: ${comment['author']}</h4>${comment['content']} <button>Reply</button>`
         tutorial_comments.appendChild(newComment)
+        for(i = 0; i < comment['replies'].length; i++) {
+          const newReply = document.createElement("div")
+          newReply.innerHTML = `<h4>By: ${comment['replies'][i]['author']}</h4>${comment['replies'][i]['content']}`
+          newReply.style.marginLeft = '20px'
+          tutorial_comments.appendChild(newReply)
+        }
       })
     });
 }
