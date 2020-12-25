@@ -31,6 +31,14 @@ button {
     color: white;
     &:active {
       box-shadow: 0 0 0 4px rgba($color: $secondary-dark, $alpha: 0.2);
+      border-color: $secondary;
+      background-color: $secondary-dark;
+    }
+    &.outline {
+      background: none;
+      border-width: 1px;
+      font-weight: 400;
+      color: $secondary;
     }
   }
   &.white {
@@ -38,6 +46,18 @@ button {
     border: none;
     &:active {
       box-shadow: 0 0 0 4px rgba($color: white, $alpha: 0.2);
+    }
+  }
+  &.pill {
+    padding: 5px 11px;
+    font-size: 14px;
+    border-radius: 20px;
+  }
+  &.clear {
+    background: none;
+    border: none;
+    &:hover {
+      box-shadow: none;
     }
   }
 }

@@ -5,9 +5,37 @@
 @import 'button';
 body {
   background-color: $background-dark;
+  &::-webkit-scrollbar-track {
+    background-color: blue;
+  }
+}
+.container {
+  max-width: 1200px;
+  padding: 0 10px;
+  margin: auto;
+}
+header {
+  display: flex;
+  width: 100%;
+  #categories_list_container {
+    position: relative;
+    flex-grow: 1;
+    min-width: 0;
+    .categories {
+      white-space: nowrap;
+      overflow: auto;
+      padding: 9px 0;
+      * {
+        margin: 1px;
+      }
+    }
+    .gradient-overlay {
+      @include side-gradient-overlay;
+    }
+  }
 }
 .overlay {
-  position: absolute;
+  position: fixed;
   background: black;
   opacity: 0.5;
   top: 0;
@@ -17,25 +45,71 @@ body {
   cursor: pointer;
 }
 .tutorials {
-  display: grid;
-  gap: 20px;
-  grid-template-columns: repeat(3, 1fr);
-  justify-items: center;
-}
-.tutorial_container {
-  width: 400px;
-  cursor: pointer;
-  .img-wrapper {
-    height: 225px;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-  }
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 30px;
 }
 .active_tutorial {
   z-index: 3;
-  background-color: white;
 }
-.origin-comment + div {
-  margin-left: 20px;
+.tutorial_container {
+  background: $darker-gray;
+  border: 1px solid $dark-gray;
+  border-radius: 10px;
+  box-shadow: 0px 4px 15px rgba($color: $dark-gray, $alpha: 0.25);
+  .cover-image {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 100%;
+    padding-top: 56.25%;
+  }
+  .content {
+    padding: 10px;
+    position: relative;
+    p {
+      background: -webkit-linear-gradient($secondary 70%, rgba($color: white, $alpha: 0));
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+  }
+  .information {
+    padding: 0 10px 10px 10px;
+    .categories_comments_container {
+      align-items: center;
+      display: flex;
+      #categories_list_container {
+        position: relative;
+        flex-grow: 1;
+        min-width: 0;
+        .categories {
+          white-space: nowrap;
+          overflow: auto;
+          padding: 9px 0;
+          * {
+            margin: 1px;
+          }
+        }
+        .gradient-overlay {
+          @include side-gradient-overlay;
+          background-image: linear-gradient(to right, rgba($color: white, $alpha: 0), $darker-gray);
+        }
+      }
+    }
+    .votes_container {
+      display: flex;
+      justify-content: space-between;
+      i {
+        color: inherit;
+      }
+      .upvote_counter {
+        color: $fun-blue;
+      }
+      .downvote_counter {
+        color: $fun-red;
+      }
+    }
+  }
 }
