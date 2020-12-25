@@ -1,0 +1,43 @@
+button {
+  background-color: lightgray;
+  color: black;
+  padding: 9px 12px;
+  line-height: 100%;
+  font-weight: 500;
+  border-radius: 6px;
+  border: $secondary 2px solid;
+  outline: none;
+  transition: 0.1s;
+  cursor: pointer;
+  &:hover {
+    transform: scale(1.1);
+  }
+  &:active {
+    filter: brightness(1.2);
+    box-shadow: 0 0 0 4px rgba($color: black, $alpha: 0.2);
+    transform: scale(1);
+  }
+  &.primary {
+    background-color: $primary;
+    border-color: $primary-dark;
+    color: white;
+    &:active {
+      box-shadow: 0 0 0 4px rgba($color: $primary-dark, $alpha: 0.2);
+    }
+  }
+  &.secondary {
+    background-color: $secondary;
+    border-color: $secondary-dark;
+    color: white;
+    &:active {
+      box-shadow: 0 0 0 4px rgba($color: $secondary-dark, $alpha: 0.2);
+    }
+  }
+  &.white {
+    background-color: white;
+    border: none;
+    &:active {
+      box-shadow: 0 0 0 4px rgba($color: white, $alpha: 0.2);
+    }
+  }
+}

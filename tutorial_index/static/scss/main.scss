@@ -1,10 +1,10 @@
+@import "vars";
+@import "utilities";
 @import "resets";
 @import "nav";
-
-.register-prompt {
-  a {
-    text-decoration: underline;
-  }
+@import 'button';
+body {
+  background-color: $background-dark;
 }
 .overlay {
   position: absolute;
