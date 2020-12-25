@@ -2,7 +2,7 @@
 {%block category%}{%endblock%}
 <div class="add-video"><a href="{%url 'add-video'%}">Add a new video</a></div>
 {%block categories_list%}
-<div style="overflow-x: scroll;">
+<div style="overflow-x: auto;">
   {%for category in categories%}
   <a href="{%url 'category' category.name%}">{{category.name}}</a>
   {%endfor%}
