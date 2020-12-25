@@ -13,7 +13,9 @@ from .models import *
 def index(request):
   return render(
       request, "tutorial_index/index.html", {
-          "tutorials": Tutorial.objects.all()}
+          "tutorials": Tutorial.objects.all(),
+          "categories": Category.objects.all()
+          }
   )
 
 # API[GET]
@@ -110,11 +112,6 @@ def category(request, category):
       "category": category
   })
 
-
-@login_required(login_url="/login")
-def dashboard(request, dashboard):
-  pass
-
 # Adding a new Video
 
 
@@ -205,7 +202,7 @@ def register(request):
 
     # Log them in automatically and bring them to their dashboard
     login(request, user)
-    return HttpResponseRedirect(reverse("dashboard"))
+    return HttpResponseRedirect(reverse("index"))
   # Return the register page
   else:
     return render(request, "tutorial_index/register.html")
