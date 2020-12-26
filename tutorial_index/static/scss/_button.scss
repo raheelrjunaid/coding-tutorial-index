@@ -73,4 +73,11 @@ button, input[type="submit"] {
     background: $fun-red;
     padding: 9px;
   }
+  &.small {
+    font-weight: 400;
+    padding: 7px 10px;
+    &:hover {
+      transform: scale(1.05);
+    }
+  }
 }

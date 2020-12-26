@@ -12,7 +12,7 @@
       </div>
       <a href="{%url 'add-video'%}"><button class="primary clear"><i class="fas fa-plus fa-lg"></i></button></a>
     </header>
-    <h1>All Tutorials</h1>
+    <h1 class="my-4">All Tutorials</h1>
   {%endblock%}
   <main class="tutorials grid-3">
     {%for tutorial in tutorials%}
@@ -47,10 +47,10 @@
   </main>
   <div class="active_tutorial" style="visibility: hidden">
     <div style="text-align: right;"><button class="primary clear" onclick="closeTutorial()"><i class="fas fa-times fa-lg"></i></button></div>
-    <div style="padding-top: 56.29%; position: relative;">
-      <iframe src="" style="position: absolute; width: 100%; height: 100%; top: 0; border: none; border-radius: 10px;"></iframe>
+    <div class="my-2 iframe-container">
+      <iframe src=""></iframe>
     </div>
-    <h1></h1>
+    <h1 class="my-2"></h1>
     <p id="description"></p>
     <div class="flex-container">
       <div id="categories"></div>
@@ -63,11 +63,14 @@
         <span id="dislike_counter"></span>
       </button>
     </div>
+    <span id="comment_count"></span>
     <div class="comments"></div>
     <form id="commenting_form">
-      <label for="comment">Write a new comment:</label>
-      <input type="text" name="comment" name="comment_content">
-      <input type="submit" value="Comment">
+      <div class="comment">
+        <label for="comment" style="font-weight: bold;"></label>
+        <input type="text" name="comment" name="comment_content" placeholder="Write a new comment">
+      </div>
+      <input type="submit" value="Comment" class="secondary small" style="float: right; margin-top: 5px;">
     </form>
   </div>
   <div class="overlay" style="visibility: hidden" onclick="closeTutorial()"></div>

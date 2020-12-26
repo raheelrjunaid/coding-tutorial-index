@@ -6,7 +6,9 @@ tutorial_categories = document.querySelector(".active_tutorial #categories"),
 tutorial_video = document.querySelector(".active_tutorial iframe"),
 // Comments
 tutorial_comments = document.querySelector(".active_tutorial .comments"),
+tutorial_comment_count = document.querySelector(".active_tutorial #comment_count"),
 tutorial_comments_form = document.querySelector(".active_tutorial #commenting_form"),
+tutorial_comments_form_label = document.querySelector(".active_tutorial #commenting_form label"),
 // Likes
 tutorial_like_counter = document.querySelector('.active_tutorial #like_counter'),
 tutorial_like_button = document.querySelector(".active_tutorial .like_button"),
@@ -56,17 +58,19 @@ function showTutorial(tutorial_id, username) {
         tutorial_categories.appendChild(link);
       });
       // Comments
+      tutorial_comment_count.textContent = data.comments.length + ' Comments';
       tutorial_comments.dataset.tutorialId = tutorial_id;
+      tutorial_comments_form_label.textContent = `By ${username}`;
       data.comments.forEach((comment) => {
         const newComment = document.createElement("div")
         newComment.innerHTML = `
-        <h4>By: ${comment['author']}</h4>${comment['content']} <a href="" onclick="event.returnValue=false; reply(${comment['id']}, false, '${username}')">Reply</a>`
+        <h4 class="secondary">By: ${comment['author']}</h4>${comment['content']} <a href="" onclick="event.returnValue=false; reply(${comment['id']}, false, '${username}')">Reply</a>`
         newComment.id = comment['id']
         newComment.className = 'comment'
         tutorial_comments.appendChild(newComment)
         for(i = 0; i < comment['replies'].length; i++) {
           const newReply = document.createElement("div")
-          newReply.innerHTML = `<h4>By: ${comment['replies'][i]['author']}</h4>${comment['replies'][i]['content']}`
+          newReply.innerHTML = `<h4 class="secondary">By: ${comment['replies'][i]['author']}</h4>${comment['replies'][i]['content']}`
           newReply.className = 'reply'
           tutorial_comments.appendChild(newReply)
         }
@@ -167,7 +171,7 @@ function reply(comment_id, reply_status=false, username=null) {
       })
       const reply = document.createElement("div");
       reply.className = 'reply'
-      reply.innerHTML = `<h4>By: ${username}</h4>${reply_form_input.value}`;
+      reply.innerHTML = `<h4 class="secondary">By: ${username}</h4>${reply_form_input.value}`;
       comment_replied_to.parentNode.insertBefore(reply, comment_replied_to.nextSibling);
       document.querySelector('#reply_form').remove();
     }

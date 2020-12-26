@@ -20,12 +20,34 @@ h1 {
   line-height: 120%;
 }
 h2 {
-  font-size: 1.25em;
+  font-size: 1.25em; 
   line-height: 120%;
 }
 a {
   color: $primary;
 }
+// Forms
+label {
+  @extend .secondary;
+  display: block;
+  margin-left: 2px;
+}
+input[type='text'], textarea, select {
+  background: $dark-gray;
+  font-size: 16px;
+  border: 1px solid $secondary-dark;
+  width: 100%;
+  outline: none;
+  border-radius: 5px;
+  padding: 2px 5px;
+  &:focus {
+    border: 1px solid white;
+  }
+  &::placeholder {
+    color: $secondary;
+  }
+}
+// Scrollbar
 ::-webkit-scrollbar {
   height: 4px;
   width: 10px;
@@ -34,9 +56,9 @@ a {
   background: none;
 }
 ::-webkit-scrollbar-thumb {
-  border-radius: 20 px;
+  border-radius: 20px;
   background: rgba($color: white, $alpha: 0.5);
-  :hover {
+  &:hover {
     background: rgba($color: white, $alpha: 0.75);
   }
 }
