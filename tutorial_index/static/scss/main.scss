@@ -187,3 +187,22 @@ header {
   height: 2px;
   background: $secondary-dark;
 }
+.login-container {
+  width: 30%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  input[type='submit'] {
+    width: 100%;
+    transform: none;
+  }
+  label {
+    text-align: left;
+    margin-top: 5px;
+  }
+  #login-form {
+    width: 100%;
+  }
+}
