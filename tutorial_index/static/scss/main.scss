@@ -200,9 +200,15 @@ header {
   }
   label {
     text-align: left;
-    margin-top: 5px;
+    margin-top: 10px;
   }
   #login-form {
+    width: 100%;
+  }
+  @media (max-width: 1200px) {
+    width: 75%;
+  }
+  @media (max-width: 400px) {
     width: 100%;
   }
 }

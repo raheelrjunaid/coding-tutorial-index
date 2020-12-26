@@ -15,16 +15,18 @@
       {%if user.is_authenticated %}
       <div style="width: 50px;">
         <img src="{%static 'assets/Profile.svg'%}" alt="">
-        <a href="{%url 'logout'%}" class="secondary">Logout</a>
+        <a href="{%url 'logout'%}" class="secondary navlink">Logout</a>
       </div>
       {%else%}
-      <a href="{%url 'login'%}">Login</a>
+      <a href="{%url 'login'%}" class="navlink">Login</a>
       {%endif%}
     </div>
     {%block body%}
     {%endblock%}
     {%block js%}
     {%endblock%}
+    <footer>
+      <h2>Created by Raheel Junaid</h2></footer>
     <script src="{% static 'js/index.js' %}"></script>
   </body>
 </html>
