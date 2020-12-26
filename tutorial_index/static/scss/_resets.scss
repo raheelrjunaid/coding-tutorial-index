@@ -26,3 +26,17 @@ h2 {
 a {
   color: $primary;
 }
+::-webkit-scrollbar {
+  height: 4px;
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: none;
+}
+::-webkit-scrollbar-thumb {
+  border-radius: 20 px;
+  background: rgba($color: white, $alpha: 0.5);
+  :hover {
+    background: rgba($color: white, $alpha: 0.75);
+  }
+}

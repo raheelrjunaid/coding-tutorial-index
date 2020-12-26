@@ -1,24 +1,23 @@
 {%extends 'tutorial_index/layout.html'%} {%block title%}Home{%endblock%} {%block body%}
 <div class="container">
-  {%block category%}{%endblock%}
   {%block header%}
-  <header>
-    <div id="categories_list_container">
-      <div class="gradient-overlay"></div>
-      <div class="categories">
-        {%for category in categories%}
-        <a href="{%url 'category' category.name%}"><button class="secondary pill">{{category.name}}</button></a>
-        {%endfor%}
+    <header>
+      <div id="categories_list_container">
+        <div class="gradient-overlay"></div>
+        <div class="categories">
+          {%for category in categories%}
+          <a href="{%url 'category' category.name%}"><button class="secondary pill">{{category.name}}</button></a>
+          {%endfor%}
+        </div>
       </div>
-    </div>
-    <a href="{%url 'add-video'%}"><button class="primary clear">+</button></a>
-  </header>
+      <a href="{%url 'add-video'%}"><button class="primary clear"><i class="fas fa-plus fa-lg"></i></button></a>
+    </header>
+    <h1>All Tutorials</h1>
   {%endblock%}
-  <h1>All Tutorials</h1>
   <main class="tutorials grid-3">
     {%for tutorial in tutorials%}
     <div class="tutorial_container">
-      <div onclick="showTutorial({{tutorial.id}}, '{{request.user.username}}')">
+      <div onclick="showTutorial({{tutorial.id}}, '{{request.user.username}}')" class="click_area">
         <div class="cover-image" style="background-image: url('https://img.youtube.com/vi/{{tutorial.video_id}}/hqdefault.jpg');"></div>
         <div class="content">
           <h2>{{tutorial.title}}</h2>
@@ -36,38 +35,42 @@
               {%endfor%}
             </div>
           </div>
-          <span class="secondary">{{tutorial.comments.all | length}} <i class="fas fa-comments-alt"></i></span>
+          <span class="secondary">{{tutorial.comments.all | length}} <i class="fas fa-comment-alt fa-sm"></i></span>
         </div>
         <div class="votes_container">
-          <!-- Likes -->
-          <span class="upvote_counter">{{tutorial.likes.all|length}} <i class="far fa-arrow-up"></i></span>
-          <!-- Dislikes -->
-          <span class="downvote_counter"><i class="far fa-arrow-down"></i> {{tutorial.dislikes.all|length}}</span>
+          <span class="upvote_counter">{{tutorial.likes.all|length}} <i class="fas fa-arrow-up"></i></span>
+          <span class="downvote_counter"><i class="fas fa-arrow-down"></i> {{tutorial.dislikes.all|length}}</span>
         </div>
       </div>
     </div>
     {%endfor%}
   </main>
-  <div style="display: flex; justify-content: center; align-items: center; position: absolute; top: 0; right: 0; bottom: 0; left: 0; visibility: hidden;">
-    <div class="active_tutorial" style="visibility: hidden">
-      <button onclick="closeTutorial()">X</button>
-      <iframe src=""></iframe>
-      <h1></h1>
-      <p id="description"></p>
-      <div id="categories"></div>
-      <button class="like_button" data-liked>Upvote</button>
-      <p id="like_counter"></p>
-      <button class="dislike_button" data-disliked>Downvote</button>
-      <p id="dislike_counter"></p>
-      <div class="comments"></div>
-      <form id="commenting_form">
-        <label for="comment">Write a new comment:</label>
-        <input type="text" name="comment" name="comment_content">
-        <input type="submit" value="Comment">
-      </form>
+  <div class="active_tutorial" style="visibility: hidden">
+    <div style="text-align: right;"><button class="primary clear" onclick="closeTutorial()"><i class="fas fa-times fa-lg"></i></button></div>
+    <div style="padding-top: 56.29%; position: relative;">
+      <iframe src="" style="position: absolute; width: 100%; height: 100%; top: 0; border: none; border-radius: 10px;"></iframe>
     </div>
-    <div class="overlay" style="visibility: hidden" onclick="closeTutorial()"></div>
+    <h1></h1>
+    <p id="description"></p>
+    <div class="flex-container">
+      <div id="categories"></div>
+      <button class="like_button clear" data-liked>
+        <i class="fas fa-arrow-up"></i>
+        <span id="like_counter"></span>
+      </button>
+      <button class="dislike_button clear" data-disliked>
+        <i class="fas fa-arrow-down"></i>
+        <span id="dislike_counter"></span>
+      </button>
+    </div>
+    <div class="comments"></div>
+    <form id="commenting_form">
+      <label for="comment">Write a new comment:</label>
+      <input type="text" name="comment" name="comment_content">
+      <input type="submit" value="Comment">
+    </form>
   </div>
+  <div class="overlay" style="visibility: hidden" onclick="closeTutorial()"></div>
 </div>
 
 {%endblock%}

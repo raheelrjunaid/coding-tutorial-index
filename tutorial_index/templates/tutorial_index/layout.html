@@ -6,7 +6,7 @@
     <link href="{% static 'css/main.css' %}" rel="stylesheet" type="text/css" />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+    <script src="https://kit.fontawesome.com/d9cb1a845b.js" crossorigin="anonymous"></script>
     <title>{%block title%}{%endblock%}</title>
   </head>
   <body>
@@ -18,7 +18,10 @@
       <a href="{%url 'login'%}">Login</a>
       {%endif%}
     </div>
-    {%block body%} {%endblock%} {%block js%}{%endblock%}
+    {%block body%}
+    {%endblock%}
+    {%block js%}
+    {%endblock%}
     <script src="{% static 'js/index.js' %}"></script>
   </body>
 </html>

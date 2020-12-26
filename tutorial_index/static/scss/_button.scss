@@ -1,4 +1,4 @@
-button {
+button, input[type="submit"] {
   background-color: lightgray;
   color: black;
   padding: 9px 12px;
@@ -55,9 +55,22 @@ button {
   }
   &.clear {
     background: none;
+    padding: 9px;
     border: none;
     &:hover {
       box-shadow: none;
     }
+  }
+  &.liked {
+    border: none;
+    min-width: 50px;
+    background: $fun-blue;
+    padding: 9px;
+  }
+  &.disliked {
+    min-width: 50px;
+    border: none;
+    background: $fun-red;
+    padding: 9px;
   }
 }
