@@ -1,43 +1,51 @@
 {%extends 'tutorial_index/layout.html'%} {%block title%}Add Video{%endblock%} {% load static %} {%block js%}
 <script src="{%static 'js/addvideo.js'%}"></script>
 {%endblock%} {%block body%}
-<form action="{%url 'add-video'%}" method="post">
-  {%csrf_token%}
-  <div>
-    <label for="title">Title:</label>
-    <input type="text" name="title" id="title-field" />
-    <button type="button" id="preview-button">Generate Preview</button>
-    <button type="button" id="manual-button">Manual</button>
-  </div>
-  <br />
-  <!-- Categories -->
-  <label for="category">Choose Categories (Hold Cmd or Ctrl to select multiple): </label>
-  <div>
-    <select name="category" id="category-field" multiple>
-      {%for category in categories%}
-      <option value="{{category}}">{{category.name}}</option>
-      {%endfor%}
-    </select>
-  </div>
-  <br />
-  <!-- Create Categories -->
-  <div class="create-category">
-    <label for="category">Create Categories (separated by ', '):</label>
-    <div><input type="text" name="created-category" /></div>
-  </div>
-  <br />
-  <!-- Preview -->
-  <div id="preview"></div>
-  <!-- Manual Fields -->
-  <div id="manual-fields" style="visibility: visible">
-    <input type="text" name="description" placeholder="Description" />
-    <input type="text" name="id" placeholder="Video ID" />
-  </div>
-  <!-- Submit -->
-  <br />
-  <div onclick="checkValidity()">
-    <input type="button" value="Add Video" />
-  <div>
-  <span class="error_message"></span>
+<div class="container">
+  <form action="{%url 'add-video'%}" method="post">
+    <div class="grid-2">
+      <div type="button" id="manual-button" class="selector py-3 disabled">
+        <h1>Manual</h1></div>
+      <div type="button" id="preview-button" class="selector py-3"><h1>Automatic</h1></div>
+      {%csrf_token%}
+      <div class="disabled m-2 no-click" id="manual_fields">
+        <label for="title">Title</label>
+        <input type="text" name="title" id="title-field" placeholder="Title" />
+        <label for="description">Description</label>
+        <textarea name="description" id="" cols="30" rows="10"></textarea>
+        <label for="id">Video ID</label>
+        <input type="text" name="id" placeholder="Video ID" />
+      </div>
+      <!-- Preview -->
+      <div id="preview_fields" class="m-2 no-click expand">
+        <label for="search-query">Search on Youtube</label>
+        <div style="display: flex;">
+          <input type="text" placeholder="Search query" id='search_query'>
+          <button type="button" class="white small mx-2" id='generate_preview'>Generate</button>
+        </div>
+        <div id="preview"></div>
+      </div>
+      <div class="divider my-4"></div>
+      <!-- Categories -->
+      <div class="mx-2">
+        <label for="category">Choose Categories (Hold Cmd or Ctrl to select multiple): </label>
+        <select name="category" id="category-field" multiple>
+          {%for category in categories%}
+          <option value="{{category}}">{{category.name}}</option>
+          {%endfor%}
+        </select>
+      </div>
+      <!-- Create Categories -->
+      <div class="mx-2">
+        <label for="category">Create Categories (separated by ', '):</label>
+        <input type="text" name="created-category" />
+      </div>
+    </div>
+    <!-- Submit -->
+    <div style="text-align: center;">
+      <button type="button" value="Add Video" class="primary my-2" id="submit_button">Add Video</button>
+      <div class="error_message"></div>
+    </div>
+</div>
 </form>
 {%endblock%}

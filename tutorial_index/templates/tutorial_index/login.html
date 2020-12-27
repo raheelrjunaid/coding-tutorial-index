@@ -1,13 +1,26 @@
-{%extends 'tutorial_index/layout.html'%}
-{%block title%}Login{%endblock%}
-
-{%block body%}
-{{message}}
-<form action="{%url 'login'%}" method="post">
-  {%csrf_token%}
-  <input type="text" name='username' placeholder='Username'>
-  <input type="password" name='password' placeholder='Password'>
-  <input type="submit" value="Continue">
-</form>
-<p class="register-prompt">Don't have an account? <a href="{%url 'register'%}">Register</a></p>
-{%endblock%}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link href="{% static 'css/main.css' %}" rel="stylesheet" type="text/css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://kit.fontawesome.com/d9cb1a845b.js" crossorigin="anonymous"></script>
+  <title>Login</title>
+</head>
+<body>
+  <div class="center-align login-container container">
+    {{message}}
+    <form action="{%url 'login'%}" method="post" id="login-form">
+      <a href="{%url 'index'%}" style="width: 100%;"><img src="{%static 'assets/Logo.svg'%}" alt=""></a>
+      {%csrf_token%}
+      <label for="username">Username</label>
+      <input type="text" name='username' placeholder='Username'>
+      <label for="password">Password</label>
+      <input type="password" name='password' placeholder='Password'>
+      <input type="submit" value="Continue" class="primary my-3">
+    </form>
+    <p class="register-prompt">Don't have an account? <a href="{%url 'register'%}">Register</a></p>
+  </div>
+</body>
+</html>

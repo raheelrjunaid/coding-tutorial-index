@@ -1,51 +1,81 @@
 {%extends 'tutorial_index/layout.html'%} {%block title%}Home{%endblock%} {%block body%}
-{%block category%}{%endblock%}
-<div class="add-video"><a href="{%url 'add-video'%}">Add a new video</a></div>
-{%block categories_list%}
-<div style="overflow-x: auto;">
-  {%for category in categories%}
-  <a href="{%url 'category' category.name%}">{{category.name}}</a>
-  {%endfor%}
-</div>
-{%endblock%}
-<main class="tutorials">
-  {%for tutorial in tutorials%}
-  <div class="tutorial_container">
-    <div onclick="showTutorial({{tutorial.id}}, '{{request.user.username}}')">
-      <div class="img-wrapper">
-        <img src="https://img.youtube.com/vi/{{tutorial.video_id}}/hqdefault.jpg" alt="" />
+<div class="container">
+  {%block header%}
+    <header>
+      <div id="categories_list_container">
+        <div class="gradient-overlay"></div>
+        <div class="categories">
+          {%for category in categories%}
+          <a href="{%url 'category' category.name%}"><button class="secondary pill">{{category.name}}</button></a>
+          {%endfor%}
+        </div>
       </div>
-      <h3>{{tutorial.title}}</h3>
-      <p>{{tutorial.description}}</p>
+      {%if user.is_authenticated %}
+      <a href="{%url 'add-video'%}"><button class="primary clear"><i class="fas fa-plus fa-lg"></i></button></a>
+      {%endif%}
+    </header>
+    <h1 class="my-4">All Tutorials</h1>
+  {%endblock%}
+  <main class="tutorials grid-3">
+    {%for tutorial in tutorials%}
+    <div class="tutorial_container">
+      <div onclick="showTutorial({{tutorial.id}}, '{{request.user.username}}')" class="click_area">
+        <div class="cover-image" style="background-image: url('https://img.youtube.com/vi/{{tutorial.video_id}}/hqdefault.jpg');"></div>
+        <div class="content">
+          <h2>{{tutorial.title}}</h2>
+          <p>{{tutorial.description}}</p>
+        </div>
+      </div>
+      <!-- Categories -->
+      <div class="information">
+        <div class="categories_comments_container">
+          <div id="categories_list_container">
+            <div class="gradient-overlay"></div>
+            <div class="categories">
+              {%for category in tutorial.category.all%}
+              <a href="{%url 'category' category.name%}"><button class="secondary pill outline">{{category.name}}</button></a>
+              {%endfor%}
+            </div>
+          </div>
+          <span class="secondary">{{tutorial.comments.all | length}} <i class="fas fa-comment-alt fa-sm"></i></span>
+        </div>
+        <div class="votes_container">
+          <span class="upvote_counter">{{tutorial.likes.all|length}} <i class="fas fa-arrow-up"></i></span>
+          <span class="downvote_counter"><i class="fas fa-arrow-down"></i> {{tutorial.dislikes.all|length}}</span>
+        </div>
+      </div>
     </div>
-    <!-- Categories -->
-    <div>
-      {%for category in tutorial.category.all%}
-      <a href="{%url 'category' category.name%}" class="category">{{category.name}}</a>
-      {%endfor%}
-      <span style="float: right;">{{tutorial.comments.all | length}} Comments</span>
-    </div>
-  </div>
-  {%endfor%}
-</main>
-<div style="display: flex; justify-content: center; align-items: center; position: absolute; top: 0; right: 0; bottom: 0; left: 0; visibility: hidden;">
-  <div class="active_tutorial" style="visibility: hidden">
-    <button onclick="closeTutorial()">X</button>
-    <iframe src=""></iframe>
-    <h1></h1>
-    <p id="description"></p>
-    <div id="categories"></div>
-    <button class="like_button" data-liked>Upvote</button>
-    <p id="like_counter"></p>
-    <button class="dislike_button" data-disliked>Downvote</button>
-    <p id="dislike_counter"></p>
-    <div class="comments"></div>
-    <form id="commenting_form">
-      <label for="comment">Write a new comment:</label>
-      <input type="text" name="comment" name="comment_content">
-      <input type="submit" value="Comment">
-    </form>
-  </div>
-  <div class="overlay" style="visibility: hidden" onclick="closeTutorial()"></div>
+    {%endfor%}
+  </main>
 </div>
+<div class="active_tutorial" style="visibility: hidden">
+  <div style="text-align: right;"><button class="primary clear" onclick="closeTutorial()"><i class="fas fa-times fa-lg"></i></button></div>
+  <div class="my-2 iframe-container">
+    <iframe src=""></iframe>
+  </div>
+  <h1 class="my-2"></h1>
+  <p id="description"></p>
+  <div class="flex-container">
+    <div id="categories"></div>
+    <button class="like_button clear" data-liked>
+      <i class="fas fa-arrow-up"></i>
+      <span id="like_counter"></span>
+    </button>
+    <button class="dislike_button clear" data-disliked>
+      <i class="fas fa-arrow-down"></i>
+      <span id="dislike_counter"></span>
+    </button>
+  </div>
+  <span id="comment_count"></span>
+  <div class="comments"></div>
+  <form id="commenting_form">
+    <div class="comment">
+      <label for="comment" style="font-weight: bold;"></label>
+      <input type="text" name="comment" name="comment_content" placeholder="Write a new comment">
+    </div>
+    <input type="submit" value="Comment" class="secondary small" style="float: right; margin-top: 5px;">
+  </form>
+</div>
+<div class="overlay" style="visibility: hidden" onclick="closeTutorial()"></div>
+
 {%endblock%}

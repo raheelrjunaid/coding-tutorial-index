@@ -1,0 +1,83 @@
+button, input[type="submit"] {
+  background-color: lightgray;
+  color: black;
+  padding: 9px 12px;
+  line-height: 100%;
+  font-weight: 500;
+  border-radius: 6px;
+  border: $secondary 2px solid;
+  outline: none;
+  transition: 0.1s;
+  cursor: pointer;
+  &:hover {
+    transform: scale(1.1);
+  }
+  &:active {
+    filter: brightness(1.2);
+    box-shadow: 0 0 0 4px rgba($color: black, $alpha: 0.2);
+    transform: scale(1);
+  }
+  &.primary {
+    background-color: $primary;
+    border-color: $primary-dark;
+    color: white;
+    &:active {
+      box-shadow: 0 0 0 4px rgba($color: $primary-dark, $alpha: 0.2);
+    }
+  }
+  &.secondary {
+    background-color: $secondary;
+    border-color: $secondary-dark;
+    color: white;
+    &:active {
+      box-shadow: 0 0 0 4px rgba($color: $secondary-dark, $alpha: 0.2);
+      border-color: $secondary;
+      background-color: $secondary-dark;
+    }
+    &.outline {
+      background: none;
+      border-width: 1px;
+      font-weight: 400;
+      color: $secondary;
+    }
+  }
+  &.white {
+    background-color: white;
+    border: none;
+    &:active {
+      box-shadow: 0 0 0 4px rgba($color: white, $alpha: 0.2);
+    }
+  }
+  &.pill {
+    padding: 5px 11px;
+    font-size: 14px;
+    border-radius: 20px;
+  }
+  &.clear {
+    background: none;
+    padding: 9px;
+    border: none;
+    &:hover {
+      box-shadow: none;
+    }
+  }
+  &.liked {
+    border: none;
+    min-width: 50px;
+    background: $fun-blue;
+    padding: 9px;
+  }
+  &.disliked {
+    min-width: 50px;
+    border: none;
+    background: $fun-red;
+    padding: 9px;
+  }
+  &.small {
+    font-weight: 400;
+    padding: 7px 10px;
+    &:hover {
+      transform: scale(1.05);
+    }
+  }
+}

@@ -6,7 +6,9 @@ tutorial_categories = document.querySelector(".active_tutorial #categories"),
 tutorial_video = document.querySelector(".active_tutorial iframe"),
 // Comments
 tutorial_comments = document.querySelector(".active_tutorial .comments"),
+tutorial_comment_count = document.querySelector(".active_tutorial #comment_count"),
 tutorial_comments_form = document.querySelector(".active_tutorial #commenting_form"),
+tutorial_comments_form_label = document.querySelector(".active_tutorial #commenting_form label"),
 // Likes
 tutorial_like_counter = document.querySelector('.active_tutorial #like_counter'),
 tutorial_like_button = document.querySelector(".active_tutorial .like_button"),
@@ -29,42 +31,47 @@ function showTutorial(tutorial_id, username) {
       tutorial_like_counter.textContent = data.likes.length;
       if(data.likes.includes(username)) {
         tutorial_like_button.dataset.liked = true;
-        tutorial_like_button.textContent = "Upvoted";
+        tutorial_like_button.classList.add('liked')
+        tutorial_like_button.classList.remove('clear')
       } else {
         tutorial_like_button.dataset.liked = false;
-        tutorial_like_button.textContent = "Upvote";
+        tutorial_like_button.classList.add('clear')
+        tutorial_like_button.classList.remove('liked')
       }
       // Dislikes
       tutorial_dislike_button.setAttribute("onclick", `voteTutorial(${data.tutorial_id}, '${username}', 'dislike')`);
       tutorial_dislike_counter.textContent = data.dislikes.length;
       if(data.dislikes.includes(username)) {
         tutorial_dislike_button.dataset.disliked = true;
-        tutorial_dislike_button.textContent = "Downvoted";
-        
+        tutorial_dislike_button.classList.add('disliked')
+        tutorial_dislike_button.classList.remove('clear')
       } else {
         tutorial_dislike_button.dataset.disliked = false;
-        tutorial_dislike_button.textContent = "Downvote";
+        tutorial_dislike_button.classList.add('clear')
       }
       // Categories
       data.categories.forEach((category) => {
         const link = document.createElement("a");
         link.classList.add("category");
-        link.innerHTML = category;
+        link.innerHTML = `<button class="secondary pill outline" style="margin: 3px;">${category}</button>`;
         link.href = `/category/${category}`;
         tutorial_categories.appendChild(link);
       });
       // Comments
+      tutorial_comment_count.textContent = data.comments.length + ' Comments';
       tutorial_comments.dataset.tutorialId = tutorial_id;
+      tutorial_comments_form_label.textContent = `By ${username}`;
       data.comments.forEach((comment) => {
         const newComment = document.createElement("div")
         newComment.innerHTML = `
-        <h4>By: ${comment['author']}</h4>${comment['content']} <a href="" onclick="event.returnValue=false; reply(${comment['id']}, false, '${username}')">Reply</a>`
+        <h4 class="secondary">By: ${comment['author']}</h4>${comment['content']} <a href="" onclick="event.returnValue=false; reply(${comment['id']}, false, '${username}')">Reply</a>`
         newComment.id = comment['id']
+        newComment.className = 'comment'
         tutorial_comments.appendChild(newComment)
         for(i = 0; i < comment['replies'].length; i++) {
           const newReply = document.createElement("div")
-          newReply.innerHTML = `<h4>By: ${comment['replies'][i]['author']}</h4>${comment['replies'][i]['content']}`
-          newReply.style.marginLeft = '20px'
+          newReply.innerHTML = `<h4 class="secondary">By: ${comment['replies'][i]['author']}</h4>${comment['replies'][i]['content']}`
+          newReply.className = 'reply'
           tutorial_comments.appendChild(newReply)
         }
       })
@@ -89,16 +96,19 @@ function voteTutorial(tutorial_id, username, action) {
     // Take back like from the tutorial
     if(tutorial_like_button.dataset.liked == "true") {
       tutorial_like_button.dataset.liked = false;
-      tutorial_like_button.textContent = "Upvote";
+      tutorial_like_button.classList.add('clear')
+      tutorial_like_button.classList.remove('liked')
       tutorial_like_counter.textContent = parseInt(tutorial_like_counter.textContent) - 1;
     // Like the tutorial
     } else {
       tutorial_like_button.dataset.liked = true;
-      tutorial_like_button.textContent = "Upvoted";
+      tutorial_like_button.classList.add('liked')
+      tutorial_like_button.classList.remove('clear')
       tutorial_like_counter.textContent = parseInt(tutorial_like_counter.textContent) + 1;
       if(tutorial_dislike_button.dataset.disliked == "true") {
         tutorial_dislike_button.dataset.disliked = false;
-        tutorial_dislike_button.textContent = "Downvote";
+        tutorial_dislike_button.classList.add('clear')
+        tutorial_dislike_button.classList.remove('disliked')
         tutorial_dislike_counter.textContent = parseInt(tutorial_dislike_counter.textContent) - 1;
       }
     }
@@ -108,16 +118,19 @@ function voteTutorial(tutorial_id, username, action) {
     // Take back dislike from the tutorial
     if(tutorial_dislike_button.dataset.disliked == "true") {
       tutorial_dislike_button.dataset.disliked = false;
-      tutorial_dislike_button.textContent = "Downvote";
+      tutorial_dislike_button.classList.add('clear')
+      tutorial_dislike_button.classList.remove('disliked')
       tutorial_dislike_counter.textContent = parseInt(tutorial_dislike_counter.textContent) - 1;
     // Dislike the tutorial
     } else {
       tutorial_dislike_button.dataset.disliked = true;
-      tutorial_dislike_button.textContent = "Downvoted";
+      tutorial_dislike_button.classList.add('disliked')
+      tutorial_dislike_button.classList.remove('clear')
       tutorial_dislike_counter.textContent = parseInt(tutorial_dislike_counter.textContent) + 1;
       if(tutorial_like_button.dataset.liked == "true") {
         tutorial_like_button.dataset.liked = false;
-        tutorial_like_button.textContent = "Upvote";
+        tutorial_like_button.classList.add('clear')
+        tutorial_like_button.classList.remove('liked')
         tutorial_like_counter.textContent = parseInt(tutorial_like_counter.textContent) - 1;
       }
     }
@@ -134,6 +147,7 @@ function addComment(tutorial_id, username) {
   })
   if(input_field.value != "") {
     const newComment = document.createElement("div");
+    newComment.className = 'comment'
     newComment.innerHTML = `<h4>By: ${username}</h4>${input_field.value}`;
     input_field.value = '';
     tutorial_comments.appendChild(newComment);
@@ -156,8 +170,8 @@ function reply(comment_id, reply_status=false, username=null) {
         })
       })
       const reply = document.createElement("div");
-      reply.style.marginLeft = '20px';
-      reply.innerHTML = `<h4>By: ${username}</h4>${reply_form_input.value}`;
+      reply.className = 'reply'
+      reply.innerHTML = `<h4 class="secondary">By: ${username}</h4>${reply_form_input.value}`;
       comment_replied_to.parentNode.insertBefore(reply, comment_replied_to.nextSibling);
       document.querySelector('#reply_form').remove();
     }
