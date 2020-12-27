@@ -5,6 +5,7 @@
 @import 'button';
 body {
   background-color: $background-dark;
+  overflow-x: hidden;
 }
 .container {
   max-width: 1200px;
@@ -46,13 +47,17 @@ header {
   cursor: pointer;
 }
 .tutorials {
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  grid-auto-flow: row dense;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  max-width: 100%;
   gap: 30px;
 }
 .tutorial_container {
+  overflow-x: hidden;
   background: $darker-gray;
+  max-width: 100%;
+  min-width: 0;
   border: 1px solid $dark-gray;
+  margin: 10px;
   border-radius: 10px;
   box-shadow: 0px 4px 15px rgba($color: $dark-gray, $alpha: 0.25);
   .click_area {
@@ -116,11 +121,10 @@ header {
 }
 .active_tutorial {
   border-radius: 10px;
-  margin: 10px;
+  padding: 20px;
   max-height: 95vh;
   box-shadow: 0px 10px 25px rgba($color: black, $alpha: 0.5);
   z-index: 2;
-  padding: 20px;
   background: $darker-gray;
   position: fixed;
   top: 50%;
@@ -141,9 +145,15 @@ header {
       }
     }
   }
+  @media (max-width: 1200px) {
+    width: 75%;
+  }
+  @media (max-width: 400px) {
+    width: 95%;
+  }
 }
 .comments {
-  max-height: 200px;
+  max-height: 100px;
   overflow-y: auto;
 }
 .comment {

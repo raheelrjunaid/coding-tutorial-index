@@ -13,10 +13,10 @@
     <div class="nav">
       <a href="{%url 'index'%}"><img src="{%static 'assets/Logo.svg'%}" alt=""></a>
       {%if user.is_authenticated %}
-      <div style="width: 50px;">
-        <img src="{%static 'assets/Profile.svg'%}" alt="">
-        <a href="{%url 'logout'%}" class="secondary navlink">Logout</a>
-      </div>
+      <details>
+        <summary>{{request.user}}</summary>
+        <a href="{%url 'logout'%}" class="secondary navlink mx-2">Logout</a>
+      </details>
       {%else%}
       <a href="{%url 'login'%}" class="navlink">Login</a>
       {%endif%}

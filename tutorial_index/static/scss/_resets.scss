@@ -26,6 +26,17 @@ h2 {
 a {
   color: $primary;
 }
+summary {
+  user-select: none;
+  border-bottom: 1px white solid;
+  padding: 3px 10px;
+  cursor: pointer;
+  border-radius: 5px;
+  outline: none;
+  &:hover {
+    background-color: $darker-gray;
+  }
+}
 // Forms
 label {
   @extend .secondary;

@@ -45,35 +45,35 @@
     </div>
     {%endfor%}
   </main>
-  <div class="active_tutorial" style="visibility: hidden">
-    <div style="text-align: right;"><button class="primary clear" onclick="closeTutorial()"><i class="fas fa-times fa-lg"></i></button></div>
-    <div class="my-2 iframe-container">
-      <iframe src=""></iframe>
-    </div>
-    <h1 class="my-2"></h1>
-    <p id="description"></p>
-    <div class="flex-container">
-      <div id="categories"></div>
-      <button class="like_button clear" data-liked>
-        <i class="fas fa-arrow-up"></i>
-        <span id="like_counter"></span>
-      </button>
-      <button class="dislike_button clear" data-disliked>
-        <i class="fas fa-arrow-down"></i>
-        <span id="dislike_counter"></span>
-      </button>
-    </div>
-    <span id="comment_count"></span>
-    <div class="comments"></div>
-    <form id="commenting_form">
-      <div class="comment">
-        <label for="comment" style="font-weight: bold;"></label>
-        <input type="text" name="comment" name="comment_content" placeholder="Write a new comment">
-      </div>
-      <input type="submit" value="Comment" class="secondary small" style="float: right; margin-top: 5px;">
-    </form>
-  </div>
-  <div class="overlay" style="visibility: hidden" onclick="closeTutorial()"></div>
 </div>
+<div class="active_tutorial" style="visibility: hidden">
+  <div style="text-align: right;"><button class="primary clear" onclick="closeTutorial()"><i class="fas fa-times fa-lg"></i></button></div>
+  <div class="my-2 iframe-container">
+    <iframe src=""></iframe>
+  </div>
+  <h1 class="my-2"></h1>
+  <p id="description"></p>
+  <div class="flex-container">
+    <div id="categories"></div>
+    <button class="like_button clear" data-liked>
+      <i class="fas fa-arrow-up"></i>
+      <span id="like_counter"></span>
+    </button>
+    <button class="dislike_button clear" data-disliked>
+      <i class="fas fa-arrow-down"></i>
+      <span id="dislike_counter"></span>
+    </button>
+  </div>
+  <span id="comment_count"></span>
+  <div class="comments"></div>
+  <form id="commenting_form">
+    <div class="comment">
+      <label for="comment" style="font-weight: bold;"></label>
+      <input type="text" name="comment" name="comment_content" placeholder="Write a new comment">
+    </div>
+    <input type="submit" value="Comment" class="secondary small" style="float: right; margin-top: 5px;">
+  </form>
+</div>
+<div class="overlay" style="visibility: hidden" onclick="closeTutorial()"></div>
 
 {%endblock%}
