@@ -37,11 +37,13 @@ manual_fields_toggle.addEventListener('click', () => {
   preview_toggle.classList.add('disabled');
   preview_fields.classList.add('disabled');
   manual_fields.classList.remove('disabled')
+  manual_fields.classList.add('expand')
   manual_fields_toggle.classList.remove('disabled');
 })
 preview_toggle.addEventListener('click', () => {
   preview_toggle.classList.remove('disabled');
   preview_fields.classList.remove('disabled');
+  preview_fields.classList.add('expand');
   manual_fields.classList.add('disabled')
   manual_fields_toggle.classList.add('disabled');
 })
