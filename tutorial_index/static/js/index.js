@@ -14,7 +14,8 @@ tutorial_like_counter = document.querySelector('.active_tutorial #like_counter')
 tutorial_like_button = document.querySelector(".active_tutorial .like_button"),
 // Dislikes
 tutorial_dislike_counter = document.querySelector('.active_tutorial #dislike_counter'),
-tutorial_dislike_button = document.querySelector(".active_tutorial .dislike_button");
+tutorial_dislike_button = document.querySelector(".active_tutorial .dislike_button")
+tutorial_delete_button = document.querySelector(".active_tutorial .trash")
 
 function showTutorial(tutorial_id, username) {
   fetch(`/tutorials/${tutorial_id}`)
@@ -22,6 +23,7 @@ function showTutorial(tutorial_id, username) {
     .then((data) => {
       overlay.style.visibility = "visible";
       active_tutorial_container.style.visibility = "visible";
+      tutorial_delete_button.setAttribute("onclick", `deleteObject(${tutorial_id})`);
       tutorial_title.innerHTML = data.title;
       tutorial_description.innerHTML = data.description;
       tutorial_video.src = `https://www.youtube.com/embed/${data.video_id}`;
@@ -82,13 +84,19 @@ function closeTutorial() {
   overlay.style.visibility = active_tutorial_container.style.visibility = "hidden";
   tutorial_dislike_counter.textContent = tutorial_title.innerHTML = tutorial_description.innerHTML = tutorial_categories.innerHTML = tutorial_video.src = tutorial_like_button.dataset.liked = tutorial_dislike_button.dataset.disliked = tutorial_comments.innerHTML = '';
 }
+function deleteObject(tutorial_id, comment_id='') {
+  if(comment_id == '') {
+    fetch(`/tutorials/${tutorial_id}/delete_post`, {
+      method: 'PUT',
+    })
+    closeTutorial()
+    document.querySelector(`div[data-tutorial-id='${tutorial_id}']`).style.display = 'none'
+  }
+}
 function voteTutorial(tutorial_id, username, action) {
   // Send data to server
   fetch(`/tutorials/${tutorial_id}/${action}`, {
-    method: "PUT",
-    body: JSON.stringify({
-      username: username,
-    }),
+    method: "PUT"
   })
   // Update the data on the frontend
   // Liking
@@ -141,7 +149,6 @@ function addComment(tutorial_id, username) {
   fetch(`/tutorials/${tutorial_id}/comment`, {
     method: "PUT",
     body: JSON.stringify({
-      username: username,
       content: input_field.value
     })
   })
@@ -165,7 +172,6 @@ function reply(comment_id, reply_status=false, username=null) {
         method: "PUT",
         body: JSON.stringify({
           comment_reply_id: comment_id,
-          username: username,
           content: reply_form_input.value
         })
       })

@@ -18,7 +18,7 @@
   {%endblock%}
   <main class="tutorials grid-3">
     {%for tutorial in tutorials%}
-    <div class="tutorial_container">
+    <div class="tutorial_container" data-tutorial-id="{{tutorial.id}}">
       <div onclick="showTutorial({{tutorial.id}}, '{{request.user.username}}')" class="click_area">
         <div class="cover-image" style="background-image: url('https://img.youtube.com/vi/{{tutorial.video_id}}/hqdefault.jpg');"></div>
         <div class="content">
@@ -49,7 +49,10 @@
   </main>
 </div>
 <div class="active_tutorial" style="visibility: hidden">
-  <div style="text-align: right;"><button class="primary clear" onclick="closeTutorial()"><i class="fas fa-times fa-lg"></i></button></div>
+  <div style="text-align: right;">
+    <button class="primary clear" onclick="closeTutorial()"><i class="fas fa-times fa-lg"></i></button>
+    <button class="trash"><i class="fas fa-trash-alt"></i></button>
+  </div>
   <div class="my-2 iframe-container">
     <iframe src=""></iframe>
   </div>

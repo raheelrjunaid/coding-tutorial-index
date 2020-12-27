@@ -80,4 +80,13 @@ button, input[type="submit"] {
       transform: scale(1.05);
     }
   }
+  &.trash {
+    color: $fun-red;
+    background: none;
+    border: none;
+    padding: 9px;
+    i {
+      color: inherit;
+    }
+  }
 }

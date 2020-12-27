@@ -40,6 +40,7 @@ class Tutorial(models.Model):
   dislikes = models.ManyToManyField(
       User, blank=True, related_name="disliked_tutorials")
   comments = models.ManyToManyField(Comment, blank=True)
+  user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='posted_tutorials')
 
   def __str__(self):
     return f"Tutorial #{self.id}: {self.title}"

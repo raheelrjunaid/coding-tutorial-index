@@ -59,13 +59,13 @@ def get_tutorials(request, tutorial_id=''):
 
 
 @csrf_exempt
-# API[PUT] -> (like, dislike, comments)
+# API[PUT] -> (like, dislike, comment, delete)
 def update_tutorial(request, tutorial_id, action):
   # Only allow put requests
   if request.method == "PUT":
     # Get the user that prompted request
     tutorial = Tutorial.objects.get(id=tutorial_id)
-    user = User.objects.get(username=json.loads(request.body)["username"])
+    user = request.user
     # Liking a Post
     if action == "like":
       if user in tutorial.likes.all():
@@ -101,6 +101,9 @@ def update_tutorial(request, tutorial_id, action):
         comment_replied_to = Comment.objects.get(id=data['comment_reply_id'])
         comment_replied_to.replies.add(new_reply)
         comment_replied_to.save()
+    elif action == 'delete_post':
+      if tutorial.user == user:
+        tutorial.delete()
     return HttpResponse('Success', status=201)
   else:
     return HttpResponse("Error: must be a PUT request", status=400)
@@ -113,8 +116,6 @@ def category(request, category):
   })
 
 # Adding a new Video
-
-
 def add_video(request):
   # Post Request
   if request.method == "POST":
@@ -124,11 +125,9 @@ def add_video(request):
     categories = request.POST.getlist('category')
     create_category = request.POST["created-category"].split(", ")
     video_id = request.POST["id"]
-
     # Creating the tutorial Object
     if video_id != '':
-      tutorial = Tutorial(
-          title=title, description=description, video_id=video_id)
+      tutorial = Tutorial(title=title, description=description, video_id=video_id, user=request.user)
       tutorial.save()
 
       # Checking to see if a category has been specified
