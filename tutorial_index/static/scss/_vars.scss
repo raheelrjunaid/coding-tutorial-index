@@ -1,0 +1,25 @@
+// Colors
+$primary: #0466C8;
+$primary-dark: #0353A4;
+$background: #001845;
+$background-dark: #001233;
+
+$secondary: #979DAC;
+$secondary-dark: #7D8597;
+
+$dark-gray: #5C677D;
+$darker-gray: #33415C;
+
+$fun-blue: #479CF0;
+$fun-red: #F04765;
+
+// Mixins
+@mixin side-gradient-overlay {
+  pointer-events: none;
+  width: 20%;
+  background-image: linear-gradient(to right, rgba($color: white, $alpha: 0), $background-dark);
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+}
