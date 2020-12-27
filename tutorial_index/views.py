@@ -121,7 +121,7 @@ def add_video(request):
     # Variables/Values
     title = request.POST["title"]
     description = request.POST["description"]
-    category = request.POST.get("category", "")
+    categories = request.POST.getlist('category')
     create_category = request.POST["created-category"].split(", ")
     video_id = request.POST["id"]
 
@@ -132,10 +132,12 @@ def add_video(request):
       tutorial.save()
 
       # Checking to see if a category has been specified
-      if category != "":
-        category = Category.objects.get(name=category)
-        tutorial.category.add(category)
-        tutorial.save()
+      if categories != "":
+        for category in categories:
+          entry = Category.objects.get(name=category)
+          entry.save()
+          tutorial.category.add(entry)
+          tutorial.save()
 
       # Checking for created categories
       if create_category[0] != "":
