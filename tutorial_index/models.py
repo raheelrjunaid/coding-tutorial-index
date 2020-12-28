@@ -41,4 +41,7 @@ class Comment(models.Model):
     return {self.author.username: self.content}
 
   def __str__(self):
-    return f"Comment by {self.author}: {self.content}"
+    if self.reply == True:
+      return f"Reply by {self.author}: {self.content}"
+    else:
+      return f"Comment by {self.author}: {self.content}"

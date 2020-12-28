@@ -46,7 +46,8 @@ def get_tutorials(request, tutorial_id=''):
         "categories": [name["name"] for name in tutorial.category.all().values()],
         "likes": [user["username"] for user in tutorial.likes.all().values()],
         "dislikes": [user["username"] for user in tutorial.dislikes.all().values()],
-        "comments": comments
+        "comments": comments,
+        "user": tutorial.user.username
     }, json_dumps_params={'indent': 4})
   # Shpw all tutorials
   else:
@@ -119,6 +120,7 @@ def category(request, category):
       "category": category
   })
 
+@login_required(login_url="/login")
 # Adding a new Video
 def add_video(request):
   # Post Request

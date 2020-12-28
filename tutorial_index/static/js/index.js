@@ -14,7 +14,7 @@ tutorial_like_counter = document.querySelector('.active_tutorial #like_counter')
 tutorial_like_button = document.querySelector(".active_tutorial .like_button"),
 // Dislikes
 tutorial_dislike_counter = document.querySelector('.active_tutorial #dislike_counter'),
-tutorial_dislike_button = document.querySelector(".active_tutorial .dislike_button")
+tutorial_dislike_button = document.querySelector(".active_tutorial .dislike_button"),
 tutorial_delete_button = document.querySelector(".active_tutorial .trash")
 
 function showTutorial(tutorial_id, username) {
@@ -28,29 +28,39 @@ function showTutorial(tutorial_id, username) {
       tutorial_description.innerHTML = data.description;
       tutorial_video.src = `https://www.youtube.com/embed/${data.video_id}`;
       tutorial_comments_form.setAttribute("onsubmit", `event.returnValue=false; addComment(${data.tutorial_id}, '${username}');`);
-      // Likes
-      tutorial_like_button.setAttribute("onclick", `voteTutorial(${data.tutorial_id}, '${username}', 'like')`);
+      // Sign in Privileges
+      if(username == '') {
+        tutorial_like_button.style.pointerEvents = 'none';
+        tutorial_dislike_button.style.pointerEvents = 'none';
+        tutorial_comments_form.remove();
+        tutorial_delete_button.remove();
+      } else {
+        if(username != data.user) {
+          tutorial_delete_button.remove();
+          console.log('post owner')
+        }
+        tutorial_dislike_button.setAttribute("onclick", `voteTutorial(${data.tutorial_id}, '${username}', 'dislike')`);
+        tutorial_like_button.setAttribute("onclick", `voteTutorial(${data.tutorial_id}, '${username}', 'like')`);
+        if(data.likes.includes(username)) {
+          tutorial_like_button.dataset.liked = true;
+          tutorial_like_button.classList.add('liked')
+          tutorial_like_button.classList.remove('clear')
+        } else {
+          tutorial_like_button.dataset.liked = false;
+          tutorial_like_button.classList.add('clear')
+          tutorial_like_button.classList.remove('liked')
+        }
+        if(data.dislikes.includes(username)) {
+          tutorial_dislike_button.dataset.disliked = true;
+          tutorial_dislike_button.classList.add('disliked')
+          tutorial_dislike_button.classList.remove('clear')
+        } else {
+          tutorial_dislike_button.dataset.disliked = false;
+          tutorial_dislike_button.classList.add('clear')
+        }
+      }
       tutorial_like_counter.textContent = data.likes.length;
-      if(data.likes.includes(username)) {
-        tutorial_like_button.dataset.liked = true;
-        tutorial_like_button.classList.add('liked')
-        tutorial_like_button.classList.remove('clear')
-      } else {
-        tutorial_like_button.dataset.liked = false;
-        tutorial_like_button.classList.add('clear')
-        tutorial_like_button.classList.remove('liked')
-      }
-      // Dislikes
-      tutorial_dislike_button.setAttribute("onclick", `voteTutorial(${data.tutorial_id}, '${username}', 'dislike')`);
       tutorial_dislike_counter.textContent = data.dislikes.length;
-      if(data.dislikes.includes(username)) {
-        tutorial_dislike_button.dataset.disliked = true;
-        tutorial_dislike_button.classList.add('disliked')
-        tutorial_dislike_button.classList.remove('clear')
-      } else {
-        tutorial_dislike_button.dataset.disliked = false;
-        tutorial_dislike_button.classList.add('clear')
-      }
       // Categories
       data.categories.forEach((category) => {
         const link = document.createElement("a");
@@ -65,8 +75,12 @@ function showTutorial(tutorial_id, username) {
       tutorial_comments_form_label.textContent = `By ${username}`;
       data.comments.forEach((comment) => {
         const newComment = document.createElement("div")
-        newComment.innerHTML = `
-        <h4 class="secondary">By: ${comment['author']}</h4><button class="trash" onclick="deleteObject(${tutorial_id}, ${comment['id']})"><i class="fas fa-trash-alt"></i></button>${comment['content']} <a href="" onclick="event.returnValue=false; reply(${comment['id']}, false, '${username}')">Reply</a>`
+        // Sign in priviliges
+        if(username != '') {
+          newComment.innerHTML = ` <h4 class="secondary">By: ${comment['author']}</h4><button class="trash" onclick="deleteObject(${tutorial_id}, ${comment['id']})"><i class="fas fa-trash-alt"></i></button>${comment['content']} <a href="" onclick="event.returnValue=false; reply(${comment['id']}, false, '${username}')">Reply</a>`
+        } else {
+          newComment.innerHTML = ` <h4 class="secondary">By: ${comment['author']}</h4><button class="trash" onclick="deleteObject(${tutorial_id}, ${comment['id']})"><i class="fas fa-trash-alt"></i></button>${comment['content']}`
+        }
         newComment.dataset.commentId = comment['id']
         newComment.className = 'comment'
         tutorial_comments.appendChild(newComment)
@@ -92,7 +106,7 @@ function deleteObject(tutorial_id, comment_id='') {
     })
     console.log('delete_tutorial')
     closeTutorial()
-    document.querySelector(`div[data-tutorial-id='${tutorial_id}']`).style.display = 'none'
+    document.querySelector(`div[data-tutorial-id='${tutorial_id}']`).remove();
   } else {
     fetch(`/tutorials/${tutorial_id}/delete_comment`, {
       method: 'PUT',
@@ -100,7 +114,7 @@ function deleteObject(tutorial_id, comment_id='') {
         'comment': comment_id
       })
     })
-    document.querySelector(`div[data-comment-id='${comment_id}']`).style.display = 'none'
+    document.querySelector(`div[data-comment-id='${comment_id}']`).remove();
   }
 }
 function voteTutorial(tutorial_id, username, action) {
