@@ -89,7 +89,7 @@ def update_tutorial(request, tutorial_id, action):
     elif action == "comment":
       data = json.loads(request.body)
       if data['content'] != '':
-        new_comment = Comment(author=user, content=data['content'])
+        new_comment = Comment(author=user, content=data['content'], tutorial=tutorial)
         new_comment.save()
         tutorial.comments.add(new_comment)
         tutorial.save()
@@ -98,7 +98,7 @@ def update_tutorial(request, tutorial_id, action):
       if data['content'] != '':
         new_reply = Comment(author=user, content=data['content'])
         new_reply.save()
-        comment_replied_to = Comment.objects.get(id=data['comment_reply_id'])
+        comment_replied_to = Comment.objects.get(id=data['comment_reply_id'], tutorial=tutorial)
         comment_replied_to.replies.add(new_reply)
         comment_replied_to.save()
     elif action == 'delete_post':
