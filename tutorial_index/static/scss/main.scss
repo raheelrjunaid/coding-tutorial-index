@@ -246,3 +246,11 @@ header {
     width: 100%;
   }
 }
+#reply_form {
+  margin-left: 20px;
+  display: flex;
+  align-items: flex-end;
+  div {
+    flex-grow: 1;
+  }
+}

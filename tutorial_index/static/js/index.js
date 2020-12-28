@@ -39,8 +39,8 @@ function showTutorial(tutorial_id, username) {
           tutorial_delete_button.remove();
           console.log('post owner')
         }
-        tutorial_dislike_button.setAttribute("onclick", `voteTutorial(${data.tutorial_id}, '${username}', 'dislike')`);
-        tutorial_like_button.setAttribute("onclick", `voteTutorial(${data.tutorial_id}, '${username}', 'like')`);
+        tutorial_dislike_button.setAttribute("onclick", `voteTutorial(${data.tutorial_id}, 'dislike')`);
+        tutorial_like_button.setAttribute("onclick", `voteTutorial(${data.tutorial_id}, 'like')`);
         if(data.likes.includes(username)) {
           tutorial_like_button.dataset.liked = true;
           tutorial_like_button.classList.add('liked')
@@ -117,7 +117,7 @@ function deleteObject(tutorial_id, comment_id='') {
     document.querySelector(`div[data-comment-id='${comment_id}']`).remove();
   }
 }
-function voteTutorial(tutorial_id, username, action) {
+function voteTutorial(tutorial_id, action) {
   // Send data to server
   fetch(`/tutorials/${tutorial_id}/${action}`, {
     method: "PUT"
@@ -215,8 +215,8 @@ function reply(comment_id, reply_status=false, username=null) {
   else {
     const reply_form = document.createElement("form");
     reply_form.id = 'reply_form'
-    reply_form.innerHTML = `Write a reply <input type="text"><button type="button" onclick="reply(${comment_id}, true, '${username}')">Reply<button>`;
-    reply_form.style.marginLeft = '20px';
+    reply_form.innerHTML = `<div><label>Write a reply</label><input type="text"></div><button type="button" onclick="reply(${comment_id}, true, '${username}')" class="white small mx-1">Reply</button>`;
+    console.log(reply_form.innerHTML)
     comment_replied_to.parentNode.insertBefore(reply_form, comment_replied_to.nextSibling);
   }
 }
