@@ -160,12 +160,6 @@ header {
     max-height: 100vh;
     border-radius: 0;
   }
-  #description, h1 {
-    // min-height: 0;
-    // max-height: 70px;
-    flex-grow: 2;
-    overflow-y: auto;
-  }
 }
 .comments {
   flex-grow: 0;

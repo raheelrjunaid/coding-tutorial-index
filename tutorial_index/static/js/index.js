@@ -66,13 +66,14 @@ function showTutorial(tutorial_id, username) {
       data.comments.forEach((comment) => {
         const newComment = document.createElement("div")
         newComment.innerHTML = `
-        <h4 class="secondary">By: ${comment['author']}</h4>${comment['content']} <a href="" onclick="event.returnValue=false; reply(${comment['id']}, false, '${username}')">Reply</a>`
-        newComment.id = comment['id']
+        <h4 class="secondary">By: ${comment['author']}</h4><button class="trash" onclick="deleteObject(${tutorial_id}, ${comment['id']})"><i class="fas fa-trash-alt"></i></button>${comment['content']} <a href="" onclick="event.returnValue=false; reply(${comment['id']}, false, '${username}')">Reply</a>`
+        newComment.dataset.commentId = comment['id']
         newComment.className = 'comment'
         tutorial_comments.appendChild(newComment)
         for(i = 0; i < comment['replies'].length; i++) {
           const newReply = document.createElement("div")
-          newReply.innerHTML = `<h4 class="secondary">By: ${comment['replies'][i]['author']}</h4>${comment['replies'][i]['content']}`
+          newReply.dataset.commentId = comment['replies'][i]['id']
+          newReply.innerHTML = `<h4 class="secondary">By: ${comment['replies'][i]['author']}</h4><button class="trash" onclick="deleteObject(${tutorial_id}, ${comment['replies'][i]['id']})"><i class="fas fa-trash-alt"></i></button>${comment['replies'][i]['content']}`
           newReply.className = 'reply'
           tutorial_comments.appendChild(newReply)
         }
@@ -89,8 +90,17 @@ function deleteObject(tutorial_id, comment_id='') {
     fetch(`/tutorials/${tutorial_id}/delete_post`, {
       method: 'PUT',
     })
+    console.log('delete_tutorial')
     closeTutorial()
     document.querySelector(`div[data-tutorial-id='${tutorial_id}']`).style.display = 'none'
+  } else {
+    fetch(`/tutorials/${tutorial_id}/delete_comment`, {
+      method: 'PUT',
+      body: JSON.stringify({
+        'comment': comment_id
+      })
+    })
+    document.querySelector(`div[data-comment-id='${comment_id}']`).style.display = 'none'
   }
 }
 function voteTutorial(tutorial_id, username, action) {
@@ -162,7 +172,7 @@ function addComment(tutorial_id, username) {
 }
 
 function reply(comment_id, reply_status=false, username=null) {
-  const comment_replied_to = document.getElementById(comment_id);
+  const comment_replied_to = document.querySelector(`div[data-comment-id='${comment_id}']`);
   // If the form already exists
   // Create Reply
   if(document.querySelector('#reply_form') && reply_status == true) {
