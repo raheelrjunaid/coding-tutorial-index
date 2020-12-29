@@ -103,7 +103,7 @@ The optional field was the category field which consisted of:
 - A choose an existing category from a multi-select dropdown
 - A create your category field (this is similar to YouTube's tagging structure)
 
-This was originally mandatory but I decided that enforcement of such an aspect shouldn't be present. There is some more server-side validation along with conditionals for the categories. The create-your-own-categories functionality utilizes Python's `split(", ")` function. The user is then redirected to the index page where their tutorial is put at the bottom of the list. This is because the tutorials are ordered with the highest number of likes.
+This was originally mandatory but I decided that enforcement of such an aspect shouldn't be present. There is some more server-side validation along with conditionals for the categories. The create-your-own-categories functionality utilizes Python's `split(", ")` function. The user is then redirected to the index page where their tutorial is put at the bottom of the list.
 
 > **NOTE**: Some model fields are allowed to be null. This isn't true as it was a temporary requirement for making applicable migrations and such fields wouldn't be left null.
 

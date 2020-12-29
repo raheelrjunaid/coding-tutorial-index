@@ -11,7 +11,7 @@
 <body>
   <div class="center-align login-container container">
     {{message}}
-    <form action="{%url 'login'%}" method="post" id="login-form">
+    <form action="{%url 'register'%}" method="post" id="login-form">
       <a href="{%url 'index'%}" style="width: 100%;"><img src="{%static 'assets/Logo.svg'%}" alt=""></a>
       {%csrf_token%}
       <label for="username">Username</label>

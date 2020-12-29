@@ -13,7 +13,7 @@ from .models import *
 def index(request):
   return render(
       request, "tutorial_index/index.html", {
-          "tutorials": Tutorial.objects.all().order_by('-likes'),
+          "tutorials": Tutorial.objects.all(),
           "categories": Category.objects.all()
           }
   )
@@ -106,8 +106,8 @@ def update_tutorial(request, tutorial_id, action):
       if tutorial.user == user:
         tutorial.delete()
     elif action == 'delete_comment':
-      if tutorial.user == user:
-        comment = Comment.objects.get(pk=json.loads(request.body)['comment'])
+      comment = Comment.objects.get(pk=json.loads(request.body)['comment'])
+      if comment.author == user:
         for reply in comment.replies.all():
           reply = Comment.objects.get(pk=reply.id)
           reply.delete()
@@ -119,7 +119,7 @@ def update_tutorial(request, tutorial_id, action):
 
 def category(request, category):
   return render(request, "tutorial_index/category.html", {
-      "tutorials": Tutorial.objects.filter(category=Category.objects.get(name=category)).order_by('-likes'),
+      "tutorials": Tutorial.objects.filter(category=Category.objects.get(name=category)),
       "category": category
   })
 
