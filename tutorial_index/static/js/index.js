@@ -109,8 +109,8 @@ function deleteObject(comment_id='') {
     fetch(`/tutorials/${tutorialId}/delete_post`, {
       method: 'PUT',
     })
-    closeTutorial()
     document.querySelector(`div[data-tutorial-id='${tutorialId}']`).remove();
+    closeTutorial()
   } else {
     fetch(`/tutorials/${tutorialId}/delete_comment`, {
       method: 'PUT',
@@ -126,6 +126,7 @@ function voteTutorial(action) {
   fetch(`/tutorials/${tutorialId}/${action}`, {
     method: "PUT"
   })
+  
   // Update the data on the frontend
   // Liking
   if(action == 'like') {
