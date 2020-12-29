@@ -37,7 +37,9 @@ function showTutorial(tutorial_id, username) {
         tutorial_delete_button.remove();
       } else {
         if(username != data.user) {
-          tutorial_delete_button.remove();
+          tutorial_delete_button.style.display = 'none';
+        } else {
+          tutorial_delete_button.style.display = 'inline-block';
         }
         tutorial_dislike_button.setAttribute("onclick", `voteTutorial('dislike')`);
         tutorial_like_button.setAttribute("onclick", `voteTutorial('like')`);
@@ -77,9 +79,11 @@ function showTutorial(tutorial_id, username) {
         const newComment = document.createElement("div")
         // Sign in priviliges
         if(username == comment.author) {
-          newComment.innerHTML = `<h4 class="secondary">By: ${comment['author']}</h4><button class="trash" onclick="deleteObject(${comment['id']})"><i class="fas fa-trash-alt"></i></button>${comment['content']} <a href="" onclick="event.returnValue=false; reply(${comment['id']}, false, '${username}')">Reply</a>`
+          newComment.innerHTML = `<h4 class="secondary">By: ${comment['author']}</h4><button class="trash" onclick="deleteObject(${comment['id']})"><i class="fas fa-trash-alt"></i></button>${comment['content']} <a href="" onclick="event.returnValue=false; reply(${comment['id']}, false, '${username}')">Reply</a>`;
+        } else if(username != '') {
+          newComment.innerHTML = `<h4 class="secondary">By: ${comment['author']}</h4>${comment['content']} <a href="" onclick="event.returnValue=false; reply(${comment['id']}, false, '${username}')">Reply</a>`;
         } else {
-          newComment.innerHTML = `<h4 class="secondary">By: ${comment['author']}</h4>${comment['content']}`
+          newComment.innerHTML = `<h4 class="secondary">By: ${comment['author']}</h4>${comment['content']}`;
         }
         newComment.dataset.commentId = comment['id']
         newComment.className = 'comment'
@@ -210,7 +214,19 @@ function reply(comment_id, reply_status=false, username=null) {
       })
       .then(response => response.json())
       .then(data => {
-        const commentIndex = Array.from(comment_replied_to.parentNode.children).indexOf(comment_replied_to);
+        let commentIndex = 0;
+        let count = 0;
+        document.querySelector('#reply_form').remove();
+        tutorial_comments.childNodes.forEach(comment => {
+          if(comment.className == 'comment') {
+            count += 1;
+            if(comment == comment_replied_to) {
+              commentIndex = count;
+            }
+          }
+        })
+        commentIndex -= 1;
+        console.log(commentIndex);
         const reply = document.createElement("div");
         reply.dataset.commentId = data.comments[commentIndex].replies[data.comments[commentIndex].replies.length - 1].id;
         reply.className = 'reply';
