@@ -46,7 +46,8 @@ def get_tutorials(request, tutorial_id=''):
         "categories": [name["name"] for name in tutorial.category.all().values()],
         "likes": [user["username"] for user in tutorial.likes.all().values()],
         "dislikes": [user["username"] for user in tutorial.dislikes.all().values()],
-        "comments": comments
+        "comments": comments,
+        "user": tutorial.user.username
     }, json_dumps_params={'indent': 4})
   # Shpw all tutorials
   else:
@@ -59,13 +60,13 @@ def get_tutorials(request, tutorial_id=''):
 
 
 @csrf_exempt
-# API[PUT] -> (like, dislike, comments)
+# API[PUT] -> (like, dislike, comment, delete)
 def update_tutorial(request, tutorial_id, action):
   # Only allow put requests
   if request.method == "PUT":
     # Get the user that prompted request
     tutorial = Tutorial.objects.get(id=tutorial_id)
-    user = User.objects.get(username=json.loads(request.body)["username"])
+    user = request.user
     # Liking a Post
     if action == "like":
       if user in tutorial.likes.all():
@@ -89,19 +90,29 @@ def update_tutorial(request, tutorial_id, action):
     elif action == "comment":
       data = json.loads(request.body)
       if data['content'] != '':
-        new_comment = Comment(author=user, content=data['content'])
+        new_comment = Comment(author=user, content=data['content'], tutorial=tutorial)
         new_comment.save()
         tutorial.comments.add(new_comment)
         tutorial.save()
     elif action == 'reply':
       data = json.loads(request.body)
       if data['content'] != '':
-        new_reply = Comment(author=user, content=data['content'])
+        new_reply = Comment(author=user, content=data['content'], tutorial=tutorial, reply=True)
         new_reply.save()
         comment_replied_to = Comment.objects.get(id=data['comment_reply_id'])
         comment_replied_to.replies.add(new_reply)
         comment_replied_to.save()
-    return HttpResponse('Success', status=201)
+    elif action == 'delete_post':
+      if tutorial.user == user:
+        tutorial.delete()
+    elif action == 'delete_comment':
+      if tutorial.user == user:
+        comment = Comment.objects.get(pk=json.loads(request.body)['comment'])
+        for reply in comment.replies.all():
+          reply = Comment.objects.get(pk=reply.id)
+          reply.delete()
+        comment.delete()
+    return get_tutorials(request, tutorial_id)
   else:
     return HttpResponse("Error: must be a PUT request", status=400)
 
@@ -112,9 +123,8 @@ def category(request, category):
       "category": category
   })
 
+@login_required(login_url="/login")
 # Adding a new Video
-
-
 def add_video(request):
   # Post Request
   if request.method == "POST":
@@ -124,11 +134,9 @@ def add_video(request):
     categories = request.POST.getlist('category')
     create_category = request.POST["created-category"].split(", ")
     video_id = request.POST["id"]
-
     # Creating the tutorial Object
     if video_id != '':
-      tutorial = Tutorial(
-          title=title, description=description, video_id=video_id)
+      tutorial = Tutorial(title=title, description=description, video_id=video_id, user=request.user)
       tutorial.save()
 
       # Checking to see if a category has been specified
