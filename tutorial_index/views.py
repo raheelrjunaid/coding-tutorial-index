@@ -108,8 +108,11 @@ def update_tutorial(request, tutorial_id, action):
     elif action == 'delete_comment':
       if tutorial.user == user:
         comment = Comment.objects.get(pk=json.loads(request.body)['comment'])
+        for reply in comment.replies.all():
+          reply = Comment.objects.get(pk=reply.id)
+          reply.delete()
         comment.delete()
-    return HttpResponse('Success', status=201)
+    return get_tutorials(request, tutorial_id)
   else:
     return HttpResponse("Error: must be a PUT request", status=400)
 

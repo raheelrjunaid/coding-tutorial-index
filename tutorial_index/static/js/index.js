@@ -21,13 +21,14 @@ function showTutorial(tutorial_id, username) {
   fetch(`/tutorials/${tutorial_id}`)
     .then((response) => response.json())
     .then((data) => {
+      tutorialId = tutorial_id;
       overlay.style.visibility = "visible";
       active_tutorial_container.style.visibility = "visible";
-      tutorial_delete_button.setAttribute("onclick", `deleteObject(${tutorial_id})`);
+      tutorial_delete_button.setAttribute("onclick", `deleteObject()`);
       tutorial_title.innerHTML = data.title;
       tutorial_description.innerHTML = data.description;
       tutorial_video.src = `https://www.youtube.com/embed/${data.video_id}`;
-      tutorial_comments_form.setAttribute("onsubmit", `event.returnValue=false; addComment(${data.tutorial_id}, '${username}');`);
+      tutorial_comments_form.setAttribute("onsubmit", `event.returnValue=false; addComment('${username}');`);
       // Sign in Privileges
       if(username == '') {
         tutorial_like_button.style.pointerEvents = 'none';
@@ -37,10 +38,9 @@ function showTutorial(tutorial_id, username) {
       } else {
         if(username != data.user) {
           tutorial_delete_button.remove();
-          console.log('post owner')
         }
-        tutorial_dislike_button.setAttribute("onclick", `voteTutorial(${data.tutorial_id}, 'dislike')`);
-        tutorial_like_button.setAttribute("onclick", `voteTutorial(${data.tutorial_id}, 'like')`);
+        tutorial_dislike_button.setAttribute("onclick", `voteTutorial('dislike')`);
+        tutorial_like_button.setAttribute("onclick", `voteTutorial('like')`);
         if(data.likes.includes(username)) {
           tutorial_like_button.dataset.liked = true;
           tutorial_like_button.classList.add('liked')
@@ -71,15 +71,15 @@ function showTutorial(tutorial_id, username) {
       });
       // Comments
       tutorial_comment_count.textContent = data.comments.length + ' Comments';
-      tutorial_comments.dataset.tutorialId = tutorial_id;
+      tutorial_comments.dataset.tutorialId = tutorialId;
       tutorial_comments_form_label.textContent = `By ${username}`;
       data.comments.forEach((comment) => {
         const newComment = document.createElement("div")
         // Sign in priviliges
-        if(username != '') {
-          newComment.innerHTML = ` <h4 class="secondary">By: ${comment['author']}</h4><button class="trash" onclick="deleteObject(${tutorial_id}, ${comment['id']})"><i class="fas fa-trash-alt"></i></button>${comment['content']} <a href="" onclick="event.returnValue=false; reply(${comment['id']}, false, '${username}')">Reply</a>`
+        if(username == comment.author) {
+          newComment.innerHTML = `<h4 class="secondary">By: ${comment['author']}</h4><button class="trash" onclick="deleteObject(${comment['id']})"><i class="fas fa-trash-alt"></i></button>${comment['content']} <a href="" onclick="event.returnValue=false; reply(${comment['id']}, false, '${username}')">Reply</a>`
         } else {
-          newComment.innerHTML = ` <h4 class="secondary">By: ${comment['author']}</h4><button class="trash" onclick="deleteObject(${tutorial_id}, ${comment['id']})"><i class="fas fa-trash-alt"></i></button>${comment['content']}`
+          newComment.innerHTML = `<h4 class="secondary">By: ${comment['author']}</h4>${comment['content']}`
         }
         newComment.dataset.commentId = comment['id']
         newComment.className = 'comment'
@@ -87,7 +87,11 @@ function showTutorial(tutorial_id, username) {
         for(i = 0; i < comment['replies'].length; i++) {
           const newReply = document.createElement("div")
           newReply.dataset.commentId = comment['replies'][i]['id']
-          newReply.innerHTML = `<h4 class="secondary">By: ${comment['replies'][i]['author']}</h4><button class="trash" onclick="deleteObject(${tutorial_id}, ${comment['replies'][i]['id']})"><i class="fas fa-trash-alt"></i></button>${comment['replies'][i]['content']}`
+          if(username == comment['replies'][i].author) {
+            newReply.innerHTML = `<h4 class="secondary">By: ${comment['replies'][i]['author']}</h4><button class="trash" onclick="deleteObject(${comment['replies'][i]['id']})"><i class="fas fa-trash-alt"></i></button>${comment['replies'][i]['content']}`
+          } else {
+            newReply.innerHTML = `<h4 class="secondary">By: ${comment['replies'][i]['author']}</h4>${comment['replies'][i]['content']}`
+          }
           newReply.className = 'reply'
           tutorial_comments.appendChild(newReply)
         }
@@ -96,19 +100,19 @@ function showTutorial(tutorial_id, username) {
 }
 function closeTutorial() {
   tutorial_dislike_button.setAttribute("onclick", '');
+  tutorialId = null;
   overlay.style.visibility = active_tutorial_container.style.visibility = "hidden";
   tutorial_dislike_counter.textContent = tutorial_title.innerHTML = tutorial_description.innerHTML = tutorial_categories.innerHTML = tutorial_video.src = tutorial_like_button.dataset.liked = tutorial_dislike_button.dataset.disliked = tutorial_comments.innerHTML = '';
 }
-function deleteObject(tutorial_id, comment_id='') {
+function deleteObject(comment_id='') {
   if(comment_id == '') {
-    fetch(`/tutorials/${tutorial_id}/delete_post`, {
+    fetch(`/tutorials/${tutorialId}/delete_post`, {
       method: 'PUT',
     })
-    console.log('delete_tutorial')
     closeTutorial()
-    document.querySelector(`div[data-tutorial-id='${tutorial_id}']`).remove();
+    document.querySelector(`div[data-tutorial-id='${tutorialId}']`).remove();
   } else {
-    fetch(`/tutorials/${tutorial_id}/delete_comment`, {
+    fetch(`/tutorials/${tutorialId}/delete_comment`, {
       method: 'PUT',
       body: JSON.stringify({
         'comment': comment_id
@@ -117,9 +121,9 @@ function deleteObject(tutorial_id, comment_id='') {
     document.querySelector(`div[data-comment-id='${comment_id}']`).remove();
   }
 }
-function voteTutorial(tutorial_id, action) {
+function voteTutorial(action) {
   // Send data to server
-  fetch(`/tutorials/${tutorial_id}/${action}`, {
+  fetch(`/tutorials/${tutorialId}/${action}`, {
     method: "PUT"
   })
   // Update the data on the frontend
@@ -168,21 +172,25 @@ function voteTutorial(tutorial_id, action) {
     }
   }
 }
-function addComment(tutorial_id, username) {
+function addComment(username) {
   const input_field = document.querySelector(".active_tutorial #commenting_form input[type='text']")
-  fetch(`/tutorials/${tutorial_id}/comment`, {
+  fetch(`/tutorials/${tutorialId}/comment`, {
     method: "PUT",
     body: JSON.stringify({
       content: input_field.value
     })
   })
-  if(input_field.value != "") {
-    const newComment = document.createElement("div");
-    newComment.className = 'comment'
-    newComment.innerHTML = `<h4>By: ${username}</h4>${input_field.value}`;
-    input_field.value = '';
-    tutorial_comments.appendChild(newComment);
-  }
+  .then(response => response.json())
+  .then(data => {
+    if(input_field.value != "") {
+      const newComment = document.createElement("div");
+      newComment.className = 'comment';
+      newComment.dataset.commentId = data.comments[data.comments.length - 1].id;
+      newComment.innerHTML = `<h4 class="secondary">By: ${username}</h4><button class="trash" onclick="deleteObject(${newComment.dataset.commentId})"><i class="fas fa-trash-alt"></i></button>${input_field.value} <a href="" onclick="event.returnValue=false; reply(${newComment.dataset.commentId}, false, '${username}')">Reply</a>`;
+      input_field.value = '';
+      tutorial_comments.appendChild(newComment);
+    }
+  })
 }
 
 function reply(comment_id, reply_status=false, username=null) {
@@ -192,18 +200,23 @@ function reply(comment_id, reply_status=false, username=null) {
   if(document.querySelector('#reply_form') && reply_status == true) {
     const reply_form_input = document.querySelector('#reply_form input')
     if(reply_form_input.value != '') {
-      fetch(`/tutorials/${comment_replied_to.parentNode.dataset.tutorialId}/reply`, {
+      fetch(`/tutorials/${tutorialId}/reply`, {
         method: "PUT",
         body: JSON.stringify({
           comment_reply_id: comment_id,
           content: reply_form_input.value
         })
       })
-      const reply = document.createElement("div");
-      reply.className = 'reply'
-      reply.innerHTML = `<h4 class="secondary">By: ${username}</h4>${reply_form_input.value}`;
-      comment_replied_to.parentNode.insertBefore(reply, comment_replied_to.nextSibling);
-      document.querySelector('#reply_form').remove();
+      .then(response => response.json())
+      .then(data => {
+        const commentIndex = Array.from(comment_replied_to.parentNode.children).indexOf(comment_replied_to);
+        const reply = document.createElement("div");
+        reply.dataset.commentId = data.comments[commentIndex].replies[data.comments[commentIndex].replies.length - 1].id;
+        reply.className = 'reply';
+        reply.innerHTML = `<h4 class="secondary">By: ${username}</h4><button class="trash" onclick="deleteObject(${reply.dataset.commentId})"><i class="fas fa-trash-alt"></i></button>${reply_form_input.value}`;
+        comment_replied_to.parentNode.insertBefore(reply, comment_replied_to.nextSibling);
+        document.querySelector('#reply_form').remove();
+      })
     }
   }
   // Remove and replace the form
@@ -216,7 +229,6 @@ function reply(comment_id, reply_status=false, username=null) {
     const reply_form = document.createElement("form");
     reply_form.id = 'reply_form'
     reply_form.innerHTML = `<div><label>Write a reply</label><input type="text"></div><button type="button" onclick="reply(${comment_id}, true, '${username}')" class="white small mx-1">Reply</button>`;
-    console.log(reply_form.innerHTML)
     comment_replied_to.parentNode.insertBefore(reply_form, comment_replied_to.nextSibling);
   }
 }
