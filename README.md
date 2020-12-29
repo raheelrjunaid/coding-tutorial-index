@@ -192,7 +192,7 @@ To show the reply on the client-side under the right comment, I needed a couple 
 - The index of the comment relative to the `.comments` element
 - The comment id (which I already have)
 
-To find the comment index, I first needed to convert the `.comments` selector into an array using the `Array.from()` function. I needed to target the parent node of the comment, but that was unnecessary as I already had access to the `.comments` querySelector. I already knew the comment I was trying to target as I included the comment-id in a dataset attribute. This means I could find the index of that item in the array using the `indexOf()` function, and pass in the comment as an argument.
+To find the comment index, I first needed to identify which of the children of the `.comments` element are comments (opposed to replies). I then iterated through those comments using the `.forEach()` function, and recorded the index using the `count` variable. This wouldn't serve as the index of the comment as the for loop can't be broken from a secondary conditional. Instead, I stored the value in another variable (`commentIndex`) once the applicable comment was iterated over.
 
 Now that I found the index, I was able to find the ID of the corresponding reply from the fetch request using the `commentIndex` variable. Phew.
 
