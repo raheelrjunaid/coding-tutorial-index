@@ -18,7 +18,7 @@
   {%endblock%}
   <main class="tutorials grid-3">
     {%for tutorial in tutorials%}
-    <div class="tutorial_container" data-tutorial-id="{{tutorial.id}}">
+    <article class="tutorial_container" data-tutorial-id="{{tutorial.id}}">
       <div onclick="showTutorial({{tutorial.id}}, '{{request.user.username}}')" class="click_area">
         <div class="cover-image" style="background-image: url('https://img.youtube.com/vi/{{tutorial.video_id}}/hqdefault.jpg');"></div>
         <div class="content">
@@ -44,7 +44,7 @@
           <span class="downvote_counter"><i class="fas fa-arrow-down"></i> {{tutorial.dislikes.all|length}}</span>
         </div>
       </div>
-    </div>
+    </article>
     {%endfor%}
   </main>
 </div>
