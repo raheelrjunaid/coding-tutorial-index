@@ -13,7 +13,7 @@ from .models import *
 def index(request):
   return render(
       request, "tutorial_index/index.html", {
-          "tutorials": Tutorial.objects.all(),
+          "tutorials": Tutorial.objects.all().order_by('-likes'),
           "categories": Category.objects.all()
           }
   )
@@ -119,7 +119,7 @@ def update_tutorial(request, tutorial_id, action):
 
 def category(request, category):
   return render(request, "tutorial_index/category.html", {
-      "tutorials": Tutorial.objects.filter(category=Category.objects.get(name=category)),
+      "tutorials": Tutorial.objects.filter(category=Category.objects.get(name=category)).order_by('-likes'),
       "category": category
   })
 
