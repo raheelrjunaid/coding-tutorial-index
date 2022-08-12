@@ -10,7 +10,7 @@ from .models import *
 
 
 # Create your views here.
-def index(request):
+    def index(request):
   return render(
       request, "tutorial_index/index.html", {
           "tutorials": Tutorial.objects.all(),

@@ -2,7 +2,7 @@
 @import "utilities";
 @import "resets";
 @import "nav";
-@import 'button';
+@import "button";
 body {
   background-color: $background-dark;
   overflow-x: hidden;
@@ -193,13 +193,13 @@ header {
 }
 .disabled.no-click {
   pointer-events: none;
-  @media(max-width: 800px) {
+  @media (max-width: 800px) {
     display: none;
     grid-column: 1 / 3;
   }
 }
 .expand {
-  @media(max-width: 800px) {
+  @media (max-width: 800px) {
     grid-column: 1 / 3;
   }
 }
@@ -228,7 +228,7 @@ header {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  input[type='submit'] {
+  input[type="submit"] {
     width: 100%;
     transform: none;
   }

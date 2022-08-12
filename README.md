@@ -2,26 +2,30 @@
 
 This app is a collection or "index" of recommended YouTube videos from the developer community. It uses Google's YouTube API to search and return existing videos and store them in SQlite database.
 
+## Project Demo
+
+[![Watch the video](https://img.youtube.com/vi/tGCdPmbZa4o/maxresdefault.jpg)](https://youtu.be/tGCdPmbZa4o)
+
 ## Table of Contents
 
 - [Front-End](#front-end)
-  * [HTML](#html)
-  * [CSS](#css)
-  * [SCSS](#scss)
-  * [Summary](#summary)
+  - [HTML](#html)
+  - [CSS](#css)
+  - [SCSS](#scss)
+  - [Summary](#summary)
 - [Back-End](#back-end)
-  * [Authentication](#authentication)
-  * [Tutorial Posting](#tutorial-posting)
-  * [Models](#models)
+  - [Authentication](#authentication)
+  - [Tutorial Posting](#tutorial-posting)
+  - [Models](#models)
 - [Javascript](#javascript)
-  * [Tutorial Preview](#tutorial-preview)
-  * [Closing tutorial Preview](#closing-tutorial-preview)
-  * [Deleting Tutorials](#deleting-tutorials)
-  * [Voting](#voting)
-  * [Commenting](#commenting)
-  * [Replying](#replying)
-  * [Deleting Comments and Replies](#deleting-comments-and-replies)
-  * [Tutorial Posting](#tutorial-posting-1)
+  - [Tutorial Preview](#tutorial-preview)
+  - [Closing tutorial Preview](#closing-tutorial-preview)
+  - [Deleting Tutorials](#deleting-tutorials)
+  - [Voting](#voting)
+  - [Commenting](#commenting)
+  - [Replying](#replying)
+  - [Deleting Comments and Replies](#deleting-comments-and-replies)
+  - [Tutorial Posting](#tutorial-posting-1)
 - [Justification](#justification)
 
 ## Front-End
@@ -214,8 +218,9 @@ Everything else was just the generation of the HTML video preview from YouTube.
 ## Justification
 
 This project is much more complex than any other of the project combined for the following reasons:
+
 - The HTML and CSS(SCSS) implement modern, responsive design techniques with a simple, accessible, and scalable User Interface
-- Git was further explored using multiple development branches such as `master`, `feature`, `design` and `hotfix`. 
+- Git was further explored using multiple development branches such as `master`, `feature`, `design` and `hotfix`.
   - Git's **stashing** functionality was used from meaningful commits
   - A proper `.gitignore` file was included to exclude migrations and extra unnecessary cached files
 - Some extra python functions were used such as `split()`

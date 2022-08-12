@@ -1,6 +1,6 @@
-{%extends 'tutorial_index/layout.html'%} {%block title%}Home{%endblock%} {%block body%}
+{% extends 'tutorial_index/layout.html' %} {%block title%}Home{%endblock%} {%block body%}
 <div class="container">
-  {%block header%}
+  {% block header %}
     <header>
       <div id="categories_list_container">
         <div class="gradient-overlay"></div>
@@ -15,7 +15,7 @@
       {%endif%}
     </header>
     <h1 class="my-4">All Tutorials</h1>
-  {%endblock%}
+  {% endblock %}
   <main class="tutorials grid-3">
     {%for tutorial in tutorials%}
     <article class="tutorial_container" data-tutorial-id="{{tutorial.id}}">
